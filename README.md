@@ -1,5 +1,6 @@
 # Imbokodo Marketplace
-Social Impact eCommerce Solution INF3014F 
+Social Impact eCommerce Solution INF3014F 2026
+
 An eCommerce platform connecting survivors of gender-based violence
 with conscious consumers and corporate CSR buyers in South Africa.
 
