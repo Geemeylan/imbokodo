@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Our Story — Imbokodo Marketplace</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    /* About Page Styles */
+
+    .about-hero {
+      background: url('images/landing_page.jpeg') center/cover no-repeat;
+      position: relative;
+      padding: 100px 0 80px;
+      text-align: center;
+    }
+    .about-hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(42,34,25,0.65);
+      pointer-events: none;
+    }
+    .about-hero .container {
+      position: relative;
+      z-index: 1;
+    }
+    .about-hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2.2rem, 4.5vw, 3.2rem);
+      font-weight: 400;
+      color: var(--white);
+      margin-bottom: 16px;
+      line-height: 1.2;
+    }
+    .about-hero h1 em {
+      font-style: italic;
+      font-weight: 100;
+    }
+    .about-hero p {
+      font-size: 1rem;
+      color: rgba(255,255,255,0.8);
+      max-width: 520px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+
+    /* Stats Banner */
+    .stats-banner {
+      background: var(--charcoal);
+      padding: 48px 0;
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+      text-align: center;
+    }
+    .stat-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+    .stat-number {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4vw, 2.8rem);
+      font-weight: 700;
+      color: var(--terracotta);
+      line-height: 1;
+    }
+    .stat-label {
+      font-size: 0.82rem;
+      color: rgba(250,245,239,0.65);
+      letter-spacing: 0.04em;
+      line-height: 1.5;
+      max-width: 220px;
+    }
+    .stat-source {
+      font-size: 0.65rem;
+      color: rgba(250,245,239,0.35);
+      letter-spacing: 0.03em;
+      margin-top: 2px;
+    }
+
+    /* Story Sections */
+    .story-section {
+      padding: 80px 0;
+    }
+    .story-section:nth-child(even) {
+      background: var(--blush);
+    }
+
+    .story-block {
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    .story-block h2 {
+      font-family: var(--font-display);
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 400;
+      color: var(--terracotta);
+      margin-bottom: 24px;
+      line-height: 1.25;
+    }
+
+    .story-block p {
+      font-size: 1rem;
+      color: var(--mid);
+      line-height: 1.85;
+      margin-bottom: 20px;
+    }
+
+    .story-block p:last-child {
+      margin-bottom: 0;
+    }
+
+    .story-block .highlight {
+      color: var(--charcoal);
+      font-weight: 500;
+    }
+
+    /* Pull Quote */
+    .pull-quote {
+      border-left: 3px solid var(--terracotta);
+      padding: 4px 0 4px 24px;
+      margin: 32px 0;
+    }
+    .pull-quote p {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-style: italic;
+      color: var(--charcoal);
+      line-height: 1.65;
+      margin-bottom: 8px !important;
+    }
+    .pull-quote cite {
+      font-style: normal;
+      font-family: var(--font-body);
+      font-size: 0.78rem;
+      color: var(--mid);
+      letter-spacing: 0.03em;
+    }
+
+    /* Impact CTA */
+    .impact-cta {
+      text-align: center;
+      padding: 64px 0;
+      background: var(--cream);
+    }
+    .impact-cta .eyebrow {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--mid);
+      margin-bottom: 12px;
+    }
+    .impact-cta h2 {
+      font-family: var(--font-display);
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      font-weight: 400;
+      color: var(--charcoal);
+      margin-bottom: 28px;
+      line-height: 1.3;
+    }
+    .impact-cta h2 em {
+      color: var(--terracotta);
+      font-style: italic;
+    }
+
+    /* NGO Partnership Strip */
+    .ngo-strip {
+      background: var(--white);
+      border-top: 1px solid var(--light-border);
+      border-bottom: 1px solid var(--light-border);
+      padding: 48px 0;
+    }
+    .ngo-inner {
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      gap: 40px;
+      align-items: center;
+      max-width: 680px;
+      margin: 0 auto;
+    }
+    .ngo-logo-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+    .ngo-logo-wrap img {
+      width: 140px;
+      height: auto;
+    }
+    .ngo-verified-tag {
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--terracotta);
+      text-align: center;
+    }
+    .ngo-text h3 {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      color: var(--charcoal);
+      margin-bottom: 12px;
+    }
+    .ngo-text p {
+      font-size: 0.9rem;
+      color: var(--mid);
+      line-height: 1.75;
+      margin-bottom: 16px;
+    }
+    .ngo-text a.ngo-link {
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--terracotta);
+      border-bottom: 1.5px solid var(--terracotta);
+      padding-bottom: 2px;
+      transition: opacity var(--transition);
+    }
+    .ngo-text a.ngo-link:hover { opacity: 0.7; }
+
+    /* How It Works */
+    .how-it-works {
+      padding: 80px 0;
+      background: var(--blush);
+    }
+    .how-it-works h2 {
+      font-family: var(--font-display);
+      font-size: clamp(1.6rem, 3vw, 2rem);
+      color: var(--terracotta);
+      text-align: center;
+      margin-bottom: 48px;
+    }
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 40px;
+      max-width: 800px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .step-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+    .step-number {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--terracotta);
+      color: var(--white);
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .step-item h4 {
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--charcoal);
+    }
+    .step-item p {
+      font-size: 0.85rem;
+      color: var(--mid);
+      line-height: 1.65;
+      max-width: 220px;
+    }
+
+    /* Responsive */
+    @media (max-width: 760px) {
+      .stats-grid { grid-template-columns: 1fr; gap: 28px; }
+      .ngo-inner { grid-template-columns: 1fr; text-align: center; }
+      .ngo-logo-wrap { margin: 0 auto; }
+      .steps-grid { grid-template-columns: 1fr; gap: 32px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Announcement Bar -->
+  <div class="announcement-bar" id="announcementBar">
+    <span>Sign up &amp; get 10% Off on your first purchase</span>
+    <button class="close-announcement" onclick="closeAnnouncement()" aria-label="Close">&times;</button>
+  </div>
+
+  <!-- Header / Nav -->
+  <header class="header" id="header">
+    <nav class="nav">
+      <div class="nav-left">
+        <a href="shop.html" class="nav-link">Shop</a>
+        <a href="about.html" class="nav-link">Our Story</a>
+        <a href="contact.html" class="nav-link">Get in Touch</a>
+      </div>
+      <div class="nav-logo">
+        <a href="index.html">Imbokodo Marketplace</a>
+      </div>
+      <div class="nav-right">
+        <button class="icon-btn" onclick="openWishlist()" aria-label="Wishlist">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </button>
+        <button class="icon-btn cart-btn" onclick="openCart()" aria-label="Cart">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+          <span class="cart-count" id="cartCount">0</span>
+        </button>
+        <button class="icon-btn" onclick="openSearch()" aria-label="Search">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Search Overlay -->
+  <div class="search-overlay" id="searchOverlay">
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="Search products…" oninput="liveSearch(this.value)" />
+      <button onclick="closeSearch()">&#10005;</button>
+    </div>
+    <div class="search-results" id="searchResults"></div>
+  </div>
+
+  <!-- Hero -->
+  <section class="about-hero">
+    <div class="container">
+      <h1>The rock that <em>refuses</em> to break</h1>
+      <p>Imbokodo is the Zulu word for a grinding stone, and the symbol of women's strength in South Africa. This is our story.</p>
+    </div>
+  </section>
+
+  <!-- Stats Banner -->
+  <section class="stats-banner">
+    <div class="container">
+      <div class="stats-grid">
+        <div class="stat-item">
+          <span class="stat-number">10,688</span>
+          <span class="stat-label">rape cases recorded in a single quarter (Jan–Mar 2025)</span>
+          <span class="stat-source">SAPS Crime Statistics Q1 2025</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number">63%</span>
+          <span class="stat-label">of assaults occur in the home, often by someone the victim knows</span>
+          <span class="stat-source">SAPS Q3 2025/26 Report</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number">5×</span>
+          <span class="stat-label">South Africa's femicide rate compared to the global average</span>
+          <span class="stat-source">WHO Global Health Estimates</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- The Problem -->
+  <section class="story-section">
+    <div class="container">
+      <div class="story-block">
+        <h2>The shackle no one sees</h2>
+        <p>
+          South Africa has one of the highest rates of gender-based violence on the continent. Over 13,000 sexual offences were recorded between January and March 2025 alone, and those are only the reported cases. Behind every statistic is a woman who may want to leave but cannot, because leaving requires money for rent, transport, food, and a future.
+        </p>
+        <p>
+          Economic dependency is the invisible chain that keeps women tethered to abusive environments. When a survivor has no income, no savings, and no market access, the cost of leaving becomes higher than the cost of staying. That arithmetic is what we exist to change.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Our Response -->
+  <section class="story-section">
+    <div class="container">
+      <div class="story-block">
+        <h2>Commerce as a countermeasure</h2>
+        <p>
+          Imbokodo Marketplace is an e-commerce platform that converts creative skill into financial independence. We connect women artisans, many of them GBV survivors, directly with conscious consumers and corporate buyers who value ethically made, handcrafted South African goods.
+        </p>
+        <p>
+          Every product on this platform was made by hand. Every purchase sends payment directly to the woman who made it. There is no charity here, only fair exchange: exceptional craft for a fair price, with the full proceeds funding a woman's path to economic self-sufficiency.
+        </p>
+        <p>
+          Our intervention is built on a simple premise: <span class="highlight">economic independence is the primary prerequisite for exit capability.</span> When a woman earns her own income, the structural barrier that traps her in a violent household disappears.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- NGO Partnership -->
+  <div class="ngo-strip">
+    <div class="container">
+      <div class="ngo-inner">
+        <div class="ngo-logo-wrap">
+          <img src="images/gender-links-badge.png" alt="Gender Links — For Equality and Justice" />
+          <span class="ngo-verified-tag">Verified NGO Partner</span>
+        </div>
+        <div class="ngo-text">
+          <h3>In partnership with Gender Links</h3>
+          <p>
+            Gender Links is a Southern African NGO that has spent over two decades advancing gender equality across the SADC region. Their Sunrise Campaign provides life skills, entrepreneurship training, and mentorship to GBV survivors, reaching over 3,000 women across 10 countries, including 600 in South Africa. Our sellers are onboarded through Sunrise, which means every artisan on Imbokodo has been vetted, trained, and supported by a trusted partner.
+          </p>
+          <a class="ngo-link" href="https://www.genderlinks.org.za/what-we-do/end-violence-empower-women/sunrise-campaign" target="_blank" rel="noopener">Learn more about the Sunrise Campaign &rarr;</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pull Quote -->
+  <section class="story-section">
+    <div class="container">
+      <div class="story-block">
+        <div class="pull-quote">
+          <p>"Economic power is a cornerstone for breaking the cycle of gender-based violence. When women have the means to earn, save and build their futures, they gain choices — and violence loses its hold."</p>
+          <cite>Naledi Masipa, Sunrise Campaign Manager, Gender Links</cite>
+        </div>
+        <p>
+          South Africa is the only country in the Southern African Development Community whose National Strategic Plan on GBV and Femicide includes a dedicated pillar on economic empowerment. This is the policy foundation on which Imbokodo operates: not awareness alone, but tangible economic agency delivered through trade.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Impact CTA -->
+  <section class="impact-cta">
+    <div class="container">
+      <p class="eyebrow">Real purchases, real impact</p>
+      <h2>Every order on Imbokodo has moved a woman<br />closer to <em>financial freedom</em></h2>
+      <a href="impact.html" class="btn-outline">View the Impact Tracker</a>
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section class="how-it-works">
+    <div class="container">
+      <h2>How your purchase creates change</h2>
+      <div class="steps-grid">
+        <div class="step-item">
+          <span class="step-number">1</span>
+          <h4>You shop</h4>
+          <p>Browse handcrafted beadwork, ceramics, baskets, jewellery, and more from verified artisans.</p>
+        </div>
+        <div class="step-item">
+          <span class="step-number">2</span>
+          <h4>She earns</h4>
+          <p>88% of product proceeds go directly to the woman who made your piece. No middlemen, no cuts.</p>
+        </div>
+        <div class="step-item">
+          <span class="step-number">3</span>
+          <h4>Freedom grows</h4>
+          <p>That income funds rent, transport, education, and the economic independence needed to leave violence behind.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Final CTA -->
+  <section class="story-section" style="text-align:center;">
+    <div class="container">
+      <div class="story-block" style="text-align:center;">
+        <h2>Ready to make a difference?</h2>
+        <p style="margin-bottom:28px;">
+          Every item in our catalogue is a bridge between a skilled woman artisan and the economic independence she deserves. Browse the collection and find something extraordinary.
+        </p>
+        <a href="shop.html" class="btn-outline">Shop the Collection</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer" id="contact">
+    <div class="container footer-grid">
+      <div class="footer-col">
+        <p class="footer-logo">Imbokodo Marketplace</p>
+        <p class="footer-tagline">Empowering South African women artisans through ethical commerce.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Navigate</h4>
+        <a href="index.html">Home</a>
+        <a href="shop.html">Shop</a>
+        <a href="about.html">Our Story</a>
+        <a href="contact.html">Get in Touch</a>
+      </div>
+      <div class="footer-col">
+        <h4>Get in Touch</h4>
+        <p>hello@imbokodo.co.za</p>
+        <p>Cape Town, South Africa</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 Imbokodo Marketplace. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <!-- Cart Sidebar -->
+  <div class="overlay" id="overlay" onclick="closeSidebars()"></div>
+  <aside class="sidebar cart-sidebar" id="cartSidebar">
+    <div class="sidebar-header">
+      <h3>Your Cart</h3>
+      <button onclick="closeCart()">&#10005;</button>
+    </div>
+    <div class="discount-row">
+      <input type="text" id="discountInput" placeholder="Discount code (try WINTER30)" />
+      <button onclick="applyDiscount()">Apply</button>
+    </div>
+    <p class="discount-msg" id="discountMsg"></p>
+    <div class="cart-items" id="cartItems">
+      <p class="empty-msg">Your cart is empty.</p>
+    </div>
+    <div class="cart-footer" id="cartFooter" style="display:none;">
+      <div class="cart-totals">
+        <span>Subtotal</span><span id="cartSubtotal">R 0</span>
+        <span id="discountLabel" style="display:none;color:var(--terracotta);">Discount</span>
+        <span id="discountAmt" style="display:none;color:var(--terracotta);"></span>
+        <span class="total-label">Total</span><span class="total-val" id="cartTotal">R 0</span>
+      </div>
+      <a href="checkout.html" class="btn-outline full-width">Proceed to Checkout</a>
+    </div>
+  </aside>
+
+  <!-- Wishlist Sidebar -->
+  <aside class="sidebar wishlist-sidebar" id="wishlistSidebar">
+    <div class="sidebar-header">
+      <h3>Your Wishlist</h3>
+      <button onclick="closeWishlist()">&#10005;</button>
+    </div>
+    <div class="cart-items" id="wishlistItems">
+      <p class="empty-msg">Your wishlist is empty.</p>
+    </div>
+  </aside>
+
+  <script src="app.js"></script>
+</body>
+</html>

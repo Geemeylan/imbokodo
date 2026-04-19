@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Get in Touch | Imbokodo Marketplace</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    /* Contact Page Styles */
+
+    .contact-hero {
+      background: var(--blush);
+      padding: 64px 0 56px;
+      text-align: center;
+      border-bottom: 1px solid var(--light-border);
+    }
+    .contact-hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4vw, 2.8rem);
+      font-weight: 400;
+      color: var(--charcoal);
+      margin-bottom: 10px;
+    }
+    .contact-hero p {
+      font-size: 0.92rem;
+      color: var(--mid);
+      max-width: 440px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+
+    /* Contact Layout */
+    .contact-layout {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 64px 32px 96px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: start;
+    }
+
+    /* Info Column */
+    .contact-info h2 {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 400;
+      color: var(--charcoal);
+      margin-bottom: 24px;
+    }
+
+    .info-item {
+      margin-bottom: 28px;
+    }
+    .info-item h4 {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--terracotta);
+      margin-bottom: 8px;
+    }
+    .info-item p,
+    .info-item a {
+      font-size: 0.92rem;
+      color: var(--mid);
+      line-height: 1.7;
+    }
+    .info-item a {
+      color: var(--charcoal);
+      border-bottom: 1px solid var(--light-border);
+      transition: color var(--transition), border-color var(--transition);
+    }
+    .info-item a:hover {
+      color: var(--terracotta);
+      border-color: var(--terracotta);
+    }
+
+    .contact-note {
+      background: var(--blush);
+      padding: 16px 20px;
+      font-size: 0.82rem;
+      color: var(--mid);
+      line-height: 1.7;
+      border-radius: 0 3px 3px 0;
+      margin-top: 8px;
+    }
+    .contact-note strong {
+      color: var(--charcoal);
+      display: block;
+      margin-bottom: 4px;
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    /* Form Column */
+    .contact-form h2 {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 400;
+      color: var(--charcoal);
+      margin-bottom: 24px;
+    }
+
+    .form-field {
+      margin-bottom: 18px;
+    }
+    .form-field label {
+      display: block;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--charcoal);
+      margin-bottom: 7px;
+    }
+    .form-field input,
+    .form-field textarea,
+    .form-field select {
+      width: 100%;
+      border: 1px solid var(--light-border);
+      padding: 11px 14px;
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      color: var(--charcoal);
+      background: var(--white);
+      outline: none;
+      border-radius: 2px;
+      transition: border-color var(--transition);
+      appearance: none;
+    }
+    .form-field input:focus,
+    .form-field textarea:focus,
+    .form-field select:focus {
+      border-color: var(--terracotta);
+    }
+    .form-field input::placeholder,
+    .form-field textarea::placeholder {
+      color: var(--mid);
+      opacity: 0.5;
+    }
+    .form-field textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+    .form-field select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236b5c4e' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      padding-right: 36px;
+      cursor: pointer;
+    }
+
+    .form-submit {
+      background: var(--terracotta);
+      color: var(--white);
+      border: none;
+      padding: 14px 32px;
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background var(--transition);
+      border-radius: 2px;
+      width: 100%;
+      margin-top: 6px;
+    }
+    .form-submit:hover {
+      background: var(--terracotta-dark);
+    }
+
+    .form-disclaimer {
+      font-size: 0.7rem;
+      color: var(--mid);
+      margin-top: 12px;
+      line-height: 1.5;
+      text-align: center;
+    }
+
+    /* Success state */
+    .form-success {
+      display: none;
+      text-align: center;
+      padding: 40px 0;
+    }
+    .form-success.show {
+      display: block;
+    }
+    .form-success h3 {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      color: var(--charcoal);
+      margin-bottom: 10px;
+    }
+    .form-success p {
+      font-size: 0.9rem;
+      color: var(--mid);
+      line-height: 1.7;
+    }
+
+    /* FAQ Section */
+    .faq-section {
+      background: var(--blush);
+      padding: 64px 0;
+    }
+    .faq-section h2 {
+      font-family: var(--font-display);
+      font-size: clamp(1.5rem, 3vw, 1.8rem);
+      font-weight: 400;
+      color: var(--terracotta);
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    .faq-list {
+      max-width: 640px;
+      margin: 0 auto;
+    }
+    .faq-item {
+      border-bottom: 1px solid var(--light-border);
+      padding: 20px 0;
+    }
+    .faq-item:first-child {
+      border-top: 1px solid var(--light-border);
+    }
+    .faq-q {
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: var(--charcoal);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .faq-q::after {
+      content: '+';
+      font-size: 1.2rem;
+      font-weight: 300;
+      color: var(--terracotta);
+      flex-shrink: 0;
+      transition: transform var(--transition);
+    }
+    .faq-item.open .faq-q::after {
+      transform: rotate(45deg);
+    }
+    .faq-a {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s ease, padding 0.35s ease;
+      padding-top: 0;
+    }
+    .faq-item.open .faq-a {
+      max-height: 200px;
+      padding-top: 12px;
+    }
+    .faq-a p {
+      font-size: 0.88rem;
+      color: var(--mid);
+      line-height: 1.75;
+    }
+
+    /* Responsive */
+    @media (max-width: 760px) {
+      .contact-layout {
+        grid-template-columns: 1fr;
+        gap: 48px;
+        padding: 48px 20px 72px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Announcement Bar -->
+  <div class="announcement-bar" id="announcementBar">
+    <span>Sign up &amp; get 10% Off on your first purchase</span>
+    <button class="close-announcement" onclick="closeAnnouncement()" aria-label="Close">&times;</button>
+  </div>
+
+  <!-- Header / Nav -->
+  <header class="header" id="header">
+    <nav class="nav">
+      <div class="nav-left">
+        <a href="shop.html" class="nav-link">Shop</a>
+        <a href="about.html" class="nav-link">Our Story</a>
+        <a href="contact.html" class="nav-link">Get in Touch</a>
+      </div>
+      <div class="nav-logo">
+        <a href="index.html">Imbokodo Marketplace</a>
+      </div>
+      <div class="nav-right">
+        <button class="icon-btn" onclick="openWishlist()" aria-label="Wishlist">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </button>
+        <button class="icon-btn cart-btn" onclick="openCart()" aria-label="Cart">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+          <span class="cart-count" id="cartCount">0</span>
+        </button>
+        <button class="icon-btn" onclick="openSearch()" aria-label="Search">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Search Overlay -->
+  <div class="search-overlay" id="searchOverlay">
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="Search products…" oninput="liveSearch(this.value)" />
+      <button onclick="closeSearch()">&#10005;</button>
+    </div>
+    <div class="search-results" id="searchResults"></div>
+  </div>
+
+  <!-- Hero -->
+  <section class="contact-hero">
+    <h1>Get in Touch</h1>
+    <p>Questions about an order, a bulk enquiry, or our artisan programme? We'd love to hear from you.</p>
+  </section>
+
+  <!-- Contact Layout -->
+  <div class="contact-layout">
+
+    <!-- Info Column -->
+    <div class="contact-info">
+      <h2>Reach us directly</h2>
+
+      <div class="info-item">
+        <h4>Email</h4>
+        <a href="mailto:hello@imbokodo.co.za">hello@imbokodo.co.za</a>
+      </div>
+
+      <div class="info-item">
+        <h4>Phone</h4>
+        <p>+27 (0)21 447 1823</p>
+        <p style="font-size:0.78rem;color:var(--mid);margin-top:2px;">Mon–Fri, 9:00 – 17:00 SAST</p>
+      </div>
+
+      <div class="info-item">
+        <h4>Location</h4>
+        <p>Woodstock Exchange<br />66 Albert Road, Woodstock<br />Cape Town, 7925</p>
+      </div>
+
+      <div class="info-item">
+        <h4>Corporate &amp; Bulk Orders</h4>
+        <p>For B-BBEE procurement, CSR gifting, and orders of 10+ units, email us directly or use the bulk enquiry form on any product page.</p>
+      </div>
+
+      <div class="contact-note">
+        <strong>For our NGO partner</strong>
+        If you are a shelter, community organisation, or NGO wanting to onboard artisans onto the platform, please contact Gender Links at
+        <a href="mailto:SAManager@genderlinks.org.za" style="color:var(--terracotta);">SAManager@genderlinks.org.za</a>
+      </div>
+    </div>
+
+    <!-- Form Column -->
+    <div class="contact-form">
+      <h2>Send a message</h2>
+
+      <div id="contactFormWrap">
+        <div class="form-field">
+          <label for="cf_name">Your Name *</label>
+          <input type="text" id="cf_name" placeholder="e.g. Thandi Nkosi" required />
+        </div>
+
+        <div class="form-field">
+          <label for="cf_email">Email Address *</label>
+          <input type="email" id="cf_email" placeholder="thandi@example.co.za" required />
+        </div>
+
+        <div class="form-field">
+          <label for="cf_subject">Subject</label>
+          <select id="cf_subject">
+            <option value="general">General Enquiry</option>
+            <option value="order">Order Support</option>
+            <option value="bulk">Bulk / Corporate Order</option>
+            <option value="artisan">Artisan Programme</option>
+            <option value="media">Media / Press</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+
+        <div class="form-field">
+          <label for="cf_message">Message *</label>
+          <textarea id="cf_message" placeholder="Tell us how we can help…" required></textarea>
+        </div>
+
+        <button class="form-submit" onclick="submitContactForm()">Send Message</button>
+        <p class="form-disclaimer">We aim to respond within 1 business day. Your details are never shared with third parties.</p>
+      </div>
+
+      <div class="form-success" id="contactSuccess">
+        <h3>Message sent!</h3>
+        <p>Thanks for reaching out. We'll get back to you within one business day. In the meantime, feel free to <a href="shop.html" style="color:var(--terracotta);text-decoration:underline;">browse the collection</a>.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- FAQ Section -->
+  <section class="faq-section">
+    <div class="container">
+      <h2>Frequently asked</h2>
+      <div class="faq-list">
+
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">How long does delivery take?</div>
+          <div class="faq-a"><p>Orders are dispatched within 3–5 business days. Delivery within South Africa typically takes 5–7 working days via courier. Each item is handmade, so please allow for slight variations in turnaround.</p></div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">Do you ship internationally?</div>
+          <div class="faq-a"><p>Not yet, but we're working on it. Currently we deliver within South Africa only. Sign up for our newsletter to be notified when international shipping launches.</p></div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">How does the artisan receive payment?</div>
+          <div class="faq-a"><p>100% of the product price goes directly to the artisan who made your item. Payments are processed within 48 hours of order confirmation and sent via mobile money or bank transfer.</p></div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">Can I return or exchange an item?</div>
+          <div class="faq-a"><p>Because each piece is handmade and unique, we do not accept returns for change of mind. If an item arrives damaged, please contact us within 7 days with photos and we will arrange a replacement.</p></div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">What is B-BBEE procurement and how does it apply?</div>
+          <div class="faq-a"><p>Bulk purchases from Imbokodo may qualify for B-BBEE Enterprise and Supplier Development credits under South Africa's Broad-Based Black Economic Empowerment framework. Contact us for documentation and compliance support.</p></div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div class="footer-col">
+        <p class="footer-logo">Imbokodo Marketplace</p>
+        <p class="footer-tagline">Empowering South African women artisans through ethical commerce.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Navigate</h4>
+        <a href="index.html">Home</a>
+        <a href="shop.html">Shop</a>
+        <a href="about.html">Our Story</a>
+        <a href="contact.html">Get in Touch</a>
+      </div>
+      <div class="footer-col">
+        <h4>Get in Touch</h4>
+        <p>hello@imbokodo.co.za</p>
+        <p>Cape Town, South Africa</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 Imbokodo Marketplace. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <!-- Cart Sidebar -->
+  <div class="overlay" id="overlay" onclick="closeSidebars()"></div>
+  <aside class="sidebar cart-sidebar" id="cartSidebar">
+    <div class="sidebar-header">
+      <h3>Your Cart</h3>
+      <button onclick="closeCart()">&#10005;</button>
+    </div>
+    <div class="discount-row">
+      <input type="text" id="discountInput" placeholder="Discount code (try WINTER30)" />
+      <button onclick="applyDiscount()">Apply</button>
+    </div>
+    <p class="discount-msg" id="discountMsg"></p>
+    <div class="cart-items" id="cartItems">
+      <p class="empty-msg">Your cart is empty.</p>
+    </div>
+    <div class="cart-footer" id="cartFooter" style="display:none;">
+      <div class="cart-totals">
+        <span>Subtotal</span><span id="cartSubtotal">R 0</span>
+        <span id="discountLabel" style="display:none;color:var(--terracotta);">Discount</span>
+        <span id="discountAmt" style="display:none;color:var(--terracotta);"></span>
+        <span class="total-label">Total</span><span class="total-val" id="cartTotal">R 0</span>
+      </div>
+      <a href="checkout.html" class="btn-outline full-width">Proceed to Checkout</a>
+    </div>
+  </aside>
+
+  <!-- Wishlist Sidebar -->
+  <aside class="sidebar wishlist-sidebar" id="wishlistSidebar">
+    <div class="sidebar-header">
+      <h3>Your Wishlist</h3>
+      <button onclick="closeWishlist()">&#10005;</button>
+    </div>
+    <div class="cart-items" id="wishlistItems">
+      <p class="empty-msg">Your wishlist is empty.</p>
+    </div>
+  </aside>
+
+  <script src="app.js"></script>
+  <script>
+    /* Contact Form (demo — opens mailto as fallback) */
+    function submitContactForm() {
+      const name    = document.getElementById('cf_name').value.trim();
+      const email   = document.getElementById('cf_email').value.trim();
+      const subject = document.getElementById('cf_subject').value;
+      const message = document.getElementById('cf_message').value.trim();
+
+      if (!name || !email || !message) {
+        showToast('Please fill in all required fields.');
+        return;
+      }
+
+      // Build mailto as a graceful fallback (no backend)
+      const subjectMap = {
+        general: 'General Enquiry',
+        order: 'Order Support',
+        bulk: 'Bulk / Corporate Order',
+        artisan: 'Artisan Programme',
+        media: 'Media / Press',
+        other: 'Other',
+      };
+
+      const mailSubject = encodeURIComponent(`[Imbokodo] ${subjectMap[subject] || 'Enquiry'} from ${name}`);
+      const mailBody = encodeURIComponent(
+        `Name: ${name}\nEmail: ${email}\nSubject: ${subjectMap[subject]}\n\n${message}\n\n---\nSent via Imbokodo contact form`
+      );
+
+      window.location.href = `mailto:hello@imbokodo.co.za?subject=${mailSubject}&body=${mailBody}`;
+
+      // Show success state
+      document.getElementById('contactFormWrap').style.display = 'none';
+      document.getElementById('contactSuccess').classList.add('show');
+      showToast('Opening your email client…');
+    }
+
+    /* FAQ Accordion */
+    function toggleFaq(el) {
+      const item = el.closest('.faq-item');
+      const isOpen = item.classList.contains('open');
+      // Close all
+      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+      // Toggle clicked
+      if (!isOpen) item.classList.add('open');
+    }
+  </script>
+</body>
+</html>

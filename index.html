@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Imbokodo Marketplace</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- Announcement Bar -->
+  <div class="announcement-bar" id="announcementBar">
+    <span>Sign up &amp; get 10% Off on your first purchase</span>
+    <button class="close-announcement" onclick="closeAnnouncement()" aria-label="Close">&times;</button>
+  </div>
+
+  <!-- Header / Nav -->
+  <header class="header" id="header">
+    <nav class="nav">
+      <div class="nav-left">
+        <a href="shop.html" class="nav-link">Shop</a>
+        <a href="about.html" class="nav-link">Our Story</a>
+        <a href="contact.html" class="nav-link">Get in Touch</a>
+      </div>
+      <div class="nav-logo">
+        <a href="index.html">Imbokodo Marketplace</a>
+      </div>
+      <div class="nav-right">
+        <button class="icon-btn" onclick="openWishlist()" aria-label="Wishlist">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </button>
+        <button class="icon-btn cart-btn" onclick="openCart()" aria-label="Cart">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+          <span class="cart-count" id="cartCount">0</span>
+        </button>
+        <button class="icon-btn" onclick="openSearch()" aria-label="Search">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Search Overlay -->
+  <div class="search-overlay" id="searchOverlay">
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="Search products…" oninput="liveSearch(this.value)" />
+      <button onclick="closeSearch()">&#10005;</button>
+    </div>
+    <div class="search-results" id="searchResults"></div>
+  </div>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1>Ethically sourced <em>handcrafted</em> goods<br />from South African artisans</h1>
+      <a href="shop.html" class="btn-primary">Explore Catalogue</a>
+    </div>
+  </section>
+
+  <!-- Marquee Banner -->
+  <div class="marquee-bar">
+    <div class="marquee-track">
+      <span>SITEWIDE SALE / WINTER 2026</span>
+      <span class="dot">&#9679;</span>
+      <span>UP TO 30% OFF / CODE: <strong>WINTER30</strong></span>
+      <span class="dot">&#9679;</span>
+      <span>100 BONUS POINTS ON PURCHASES OVER R300</span>
+      <span class="dot">&#9679;</span>
+      <span>SITEWIDE SALE / WINTER 2026</span>
+      <span class="dot">&#9679;</span>
+      <span>UP TO 30% OFF / CODE: <strong>WINTER30</strong></span>
+      <span class="dot">&#9679;</span>
+      <span>100 BONUS POINTS ON PURCHASES OVER R300</span>
+      <span class="dot">&#9679;</span>
+      <span>SITEWIDE SALE / WINTER 2026</span>
+      <span class="dot">&#9679;</span>
+      <span>UP TO 30% OFF / CODE: <strong>WINTER30</strong></span>
+      <span class="dot">&#9679;</span>
+      <span>100 BONUS POINTS ON PURCHASES OVER R300</span>
+      <span class="dot">&#9679;</span>
+    </div>
+  </div>
+
+  <!-- Featured Products -->
+  <section class="featured section-pad">
+    <div class="container">
+      <div class="featured-grid">
+        <div class="featured-heading">
+          <h2>Made with love,<br />for your home</h2>
+        </div>
+
+        <!-- Product Cards -->
+        <div class="product-card" data-id="1" data-name="Elephant &amp; Giraffe Silhouette Enamel Teapot" data-price="789" data-original-price="789">
+          <div class="product-img-wrap">
+            <img src="images/elephant_giraffe_silhouette_enamel_teapot.webp" alt="Elephant Teapot" loading="lazy" />
+            <div class="product-actions">
+              <button class="btn-wishlist" onclick="addToWishlist(1, 'Elephant &amp; Giraffe Silhouette Enamel Teapot', 789, this)" title="Add to Wishlist">&#9825;</button>
+              <button class="btn-quick-add" onclick="addToCart(1, 'Elephant &amp; Giraffe Silhouette Enamel Teapot', 789)">Add to Cart</button>
+            </div>
+          </div>
+          <div class="product-info">
+            <p class="product-name">Elephant and Giraffe Silhouette Enamel Teapot</p>
+            <p class="product-price">R 789</p>
+          </div>
+        </div>
+
+        <div class="product-card" data-id="2" data-name="Potters Spoon Rest" data-price="320" data-original-price="320">
+          <div class="product-img-wrap">
+            <img src="images/potters_spoon_rest.webp" alt="Potters Spoon Rest" loading="lazy" />
+            <div class="product-actions">
+              <button class="btn-wishlist" onclick="addToWishlist(2, 'Potters Spoon Rest', 320, this)" title="Add to Wishlist">&#9825;</button>
+              <button class="btn-quick-add" onclick="addToCart(2, 'Potters Spoon Rest', 320)">Add to Cart</button>
+            </div>
+          </div>
+          <div class="product-info">
+            <p class="product-name">Potters Spoon Rest</p>
+            <p class="product-price">R 320</p>
+          </div>
+        </div>
+
+        <div class="product-card" data-id="3" data-name="Golden Twilight Lavumisa Basket" data-price="476" data-original-price="476">
+          <div class="product-img-wrap">
+            <img src="images/golden_twilight_lavumisa_basket.webp" alt="Lavumisa Basket" loading="lazy" />
+            <div class="product-actions">
+              <button class="btn-wishlist" onclick="addToWishlist(3, 'Golden Twilight Lavumisa Basket', 476, this)" title="Add to Wishlist">&#9825;</button>
+              <button class="btn-quick-add" onclick="addToCart(3, 'Golden Twilight Lavumisa Basket', 476)">Add to Cart</button>
+            </div>
+          </div>  
+          <div class="product-info">
+            <p class="product-name">Golden Twilight Lavumisa Basket</p>
+            <p class="product-price">R 476</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Beadwork Row -->
+      <div class="beadwork-grid">
+        <div class="product-card" data-id="4" data-name="Beaded Pincushion Protea" data-price="300" data-original-price="300">
+          <div class="product-img-wrap">
+            <img src="images/beaded_pincushion_protea.webp" alt="Beaded Pincushion Protea" loading="lazy" />
+            <div class="product-actions">
+              <button class="btn-wishlist" onclick="addToWishlist(4, 'Beaded Pincushion Protea', 300, this)" title="Add to Wishlist">&#9825;</button>
+              <button class="btn-quick-add" onclick="addToCart(4, 'Beaded Pincushion Protea', 300)">Add to Cart</button>
+            </div>
+          </div>
+          <div class="product-info">
+            <p class="product-name">Beaded Pincushion Protea</p>
+            <p class="product-price">R 300</p>
+          </div>
+        </div>
+
+        <div class="product-card" data-id="5" data-name="Beaded Protea Flower in Red &amp; Orange" data-price="300" data-original-price="300">
+          <div class="product-img-wrap">
+            <img src="images/beaded_protea_red_orange.webp" alt="Beaded Protea" loading="lazy" />
+            <div class="product-actions">
+              <button class="btn-wishlist" onclick="addToWishlist(5, 'Beaded Protea Flower in Red &amp; Orange', 300, this)" title="Add to Wishlist">&#9825;</button>
+              <button class="btn-quick-add" onclick="addToCart(5, 'Beaded Protea Flower in Red &amp; Orange', 300)">Add to Cart</button>
+            </div>
+          </div>
+          <div class="product-info">
+            <p class="product-name">Beaded Protea Flower in Red &amp; Orange</p>
+            <p class="product-price">R 300</p>
+          </div>
+        </div>
+
+        <div class="product-card" data-id="6" data-name="Beaded Africa Hoopoe Bird" data-price="300" data-original-price="300">
+          <div class="product-img-wrap">
+            <img src="images/beaded_african_hoopoe_bird.webp" alt="Beaded Hoopoe Bird" loading="lazy" />
+            <div class="product-actions">
+              <button class="btn-wishlist" onclick="addToWishlist(6, 'Beaded Africa Hoopoe Bird', 300, this)" title="Add to Wishlist">&#9825;</button>
+              <button class="btn-quick-add" onclick="addToCart(6, 'Beaded Africa Hoopoe Bird', 300)">Add to Cart</button>
+            </div>
+          </div>
+          <div class="product-info">
+            <p class="product-name">Beaded Africa Hoopoe Bird</p>
+            <p class="product-price">R 300</p>
+          </div>
+        </div>
+
+        <div class="beadwork-cta">
+          <h2>Explore our range of beadwork</h2>
+          <a href="shop.html#beadwork" class="btn-outline">Shop Beadwork</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- What We Do -->
+  <section class="what-we-do section-pad" id="our-story">
+    <div class="container text-center">
+      <h2 class="accent">What we do</h2>
+      <p class="body-text">Behind every piece in our collection is a skilled woman artisan — a weaver, beader, or potter who has spent generations perfecting her craft. By choosing Imbokodo, you're not giving charity; you're recognising exceptional work and opening the door to a global audience that values it. Every purchase is a direct investment in a woman's skill, independence, and future.</p>
+      <div class="cta-group">
+        <a href="about.html" class="btn-primary">Our Story</a>
+        <a href="impact.html" class="btn-outline">Impact Tracker</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer" id="contact">
+    <div class="container footer-grid">
+      <div class="footer-col">
+        <p class="footer-logo">Imbokodo Marketplace</p>
+        <p class="footer-tagline">Empowering South African women artisans through ethical commerce.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Navigate</h4>
+        <a href="shop.html">Shop</a>
+        <a href="about.html">Our Story</a>
+        <a href="contact.html">Get in Touch</a>
+        <a href="impact.html">Impact Tracker</a>
+      </div>
+      <div class="footer-col">
+        <h4>Get in Touch</h4>
+        <p>hello@imbokodo.co.za</p>
+        <p>Cape Town, South Africa</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 Imbokodo Marketplace. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Toast Notification -->
+  <div class="toast" id="toast"></div>
+
+  <!-- Cart Sidebar -->
+  <div class="overlay" id="overlay" onclick="closeSidebars()"></div>
+  <aside class="sidebar cart-sidebar" id="cartSidebar">
+    <div class="sidebar-header">
+      <h3>Your Cart</h3>
+      <button onclick="closeCart()">&#10005;</button>
+    </div>
+
+    <!-- Discount Code -->
+    <div class="discount-row">
+      <input type="text" id="discountInput" placeholder="Discount code (try WINTER30)" />
+      <button onclick="applyDiscount()">Apply</button>
+    </div>
+    <p class="discount-msg" id="discountMsg"></p>
+
+    <div class="cart-items" id="cartItems">
+      <p class="empty-msg">Your cart is empty.</p>
+    </div>
+    <div class="cart-footer" id="cartFooter" style="display:none;">
+      <div class="cart-totals">
+        <span>Subtotal</span><span id="cartSubtotal">R 0</span>
+        <span id="discountLabel" style="display:none;color:var(--terracotta);">Discount</span>
+        <span id="discountAmt" style="display:none;color:var(--terracotta);"></span>
+        <span class="total-label">Total</span><span class="total-val" id="cartTotal">R 0</span>
+      </div>
+      <a href="checkout.html" class="btn-outline full-width">Proceed to Checkout</a>
+    </div>
+  </aside>
+
+  <!-- Wishlist Sidebar -->
+  <aside class="sidebar wishlist-sidebar" id="wishlistSidebar">
+    <div class="sidebar-header">
+      <h3>Your Wishlist</h3>
+      <button onclick="closeWishlist()">&#10005;</button>
+    </div>
+    <div class="cart-items" id="wishlistItems">
+      <p class="empty-msg">Your wishlist is empty.</p>
+    </div>
+  </aside>
+
+  <script src="app.js"></script>
+</body>
+</html>

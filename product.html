@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Product - Imbokodo Marketplace</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+
+    /* Product Page Layout */
+    .product-page {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 56px 32px 96px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: start;
+    }
+
+    /* Breadcrumb */
+    .breadcrumb {
+      grid-column: 1 / -1;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.75rem;
+      color: var(--mid);
+      letter-spacing: 0.04em;
+      margin-bottom: -16px;
+    }
+    .breadcrumb a { color: var(--mid); transition: color var(--transition); }
+    .breadcrumb a:hover { color: var(--terracotta); }
+    .breadcrumb span { opacity: 0.45; }
+
+    /* Image Column */
+    .product-image-col {
+      position: sticky;
+      top: calc(var(--nav-h) + 24px);
+    }
+
+    .product-main-img-wrap {
+      position: relative;
+      aspect-ratio: 1 / 1;
+      overflow: hidden;
+      background: var(--blush);
+    }
+
+    .product-main-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.6s ease;
+    }
+    .product-main-img-wrap:hover img {
+      transform: scale(1.04);
+    }
+
+    /* NGO verified badge */
+    .ngo-badge {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      background: rgba(255,255,255,0.93);
+      backdrop-filter: blur(4px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 8px 10px 7px;
+      width: 110px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background var(--transition), box-shadow var(--transition);
+      box-shadow: 0 2px 12px rgba(42,34,25,0.18);
+      z-index: 2;
+      text-decoration: none;
+    }
+    .ngo-badge:hover {
+      background: rgba(255,255,255,1);
+      box-shadow: 0 4px 20px rgba(42,34,25,0.25);
+    }
+
+    .ngo-badge-logo {
+      width: 88px;
+      height: auto;
+      display: block;
+      margin-bottom: 5px;
+    }
+    .ngo-badge-label {
+      font-size: 0.5rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--charcoal);
+      line-height: 1.3;
+    }
+    .ngo-badge-sub {
+      font-size: 0.48rem;
+      color: var(--mid);
+      letter-spacing: 0.03em;
+      margin-top: 2px;
+      font-style: italic;
+      line-height: 1.3;
+    }
+
+    /* Sale badge */
+    .product-sale-badge {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      background: var(--terracotta);
+      color: var(--white);
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 5px 10px;
+      border-radius: 2px;
+      z-index: 2;
+    }
+
+    /* Info Column */
+    .product-info-col {
+      padding-top: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .product-category-tag {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--terracotta);
+      margin-bottom: 12px;
+    }
+
+    .product-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.7rem, 2.8vw, 2.4rem);
+      font-weight: 400;
+      color: var(--charcoal);
+      line-height: 1.2;
+      margin-bottom: 20px;
+    }
+
+    /* Price row */
+    .product-price-block {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .pdp-price {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      color: var(--charcoal);
+      font-weight: 700;
+    }
+    .pdp-original {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      color: var(--mid);
+      text-decoration: line-through;
+    }
+    .pdp-saving {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--terracotta);
+      background: #fde8e3;
+      padding: 3px 8px;
+      border-radius: 2px;
+    }
+
+    /* Divider */
+    .pdp-divider {
+      width: 48px;
+      height: 2px;
+      background: var(--terracotta);
+      margin: 0 0 20px;
+      border: none;
+    }
+
+    .product-description {
+      font-size: 0.95rem;
+      color: var(--mid);
+      line-height: 1.85;
+      margin-bottom: 32px;
+    }
+
+    /* Artisan note */
+    .artisan-note {
+      background: var(--blush);
+      padding: 14px 18px;
+      font-size: 0.82rem;
+      color: var(--mid);
+      line-height: 1.7;
+      margin-bottom: 32px;
+      border-radius: 0 3px 3px 0;
+    }
+    .artisan-note strong { color: var(--charcoal); display: block; margin-bottom: 2px; font-size: 0.78rem; letter-spacing: 0.05em; text-transform: uppercase; }
+
+    /* Quantity selector */
+    .qty-label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--charcoal);
+      margin-bottom: 10px;
+    }
+
+    .qty-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .pdp-qty-control {
+      display: flex;
+      align-items: center;
+      border: 1px solid var(--light-border);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .pdp-qty-control button {
+      width: 40px;
+      height: 44px;
+      background: none;
+      border: none;
+      font-size: 1.1rem;
+      color: var(--charcoal);
+      cursor: pointer;
+      transition: background var(--transition), color var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .pdp-qty-control button:hover { background: var(--blush); color: var(--terracotta); }
+    .pdp-qty-control span {
+      min-width: 44px;
+      text-align: center;
+      font-size: 0.95rem;
+      font-weight: 600;
+      border-left: 1px solid var(--light-border);
+      border-right: 1px solid var(--light-border);
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .stock-note {
+      font-size: 0.75rem;
+      color: var(--mid);
+    }
+    .stock-note.low { color: #c0783a; font-weight: 600; }
+
+    /* CTA buttons */
+    .pdp-cta {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+
+    .btn-add-cart-pdp {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: var(--terracotta);
+      color: var(--white);
+      border: none;
+      padding: 16px 28px;
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background var(--transition);
+      border-radius: 2px;
+    }
+    .btn-add-cart-pdp:hover { background: var(--terracotta-dark); }
+
+    .btn-wishlist-pdp {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: transparent;
+      color: var(--charcoal);
+      border: 1.5px solid var(--light-border);
+      padding: 14px 28px;
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: border-color var(--transition), color var(--transition), background var(--transition);
+      border-radius: 2px;
+    }
+    .btn-wishlist-pdp:hover,
+    .btn-wishlist-pdp.active {
+      border-color: var(--terracotta);
+      color: var(--terracotta);
+      background: #fdf0ec;
+    }
+
+    /* Bulk Buy Button */
+    .btn-bulk {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: var(--charcoal);
+      color: var(--cream);
+      border: none;
+      padding: 14px 28px;
+      font-family: var(--font-body);
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background var(--transition);
+      border-radius: 2px;
+      width: 100%;
+    }
+    .btn-bulk:hover { background: #1a140e; }
+    .btn-bulk-icon { font-size: 1rem; }
+
+    /* B-BBEE note */
+    .bbee-note {
+      font-size: 0.72rem;
+      color: var(--mid);
+      text-align: center;
+      margin-top: 4px;
+      margin-bottom: 8px;
+      letter-spacing: 0.02em;
+    }
+    .bbee-note span { color: var(--charcoal); font-weight: 600; }
+
+    /* Product meta */
+    .pdp-meta {
+      border-top: 1px solid var(--light-border);
+      padding-top: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .pdp-meta-row {
+      display: flex;
+      gap: 8px;
+      font-size: 0.8rem;
+    }
+    .pdp-meta-key {
+      color: var(--mid);
+      min-width: 90px;
+      letter-spacing: 0.03em;
+    }
+    .pdp-meta-val {
+      color: var(--charcoal);
+      font-weight: 500;
+      text-transform: capitalize;
+    }
+
+    /* Bulk Enquiry Modal */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(42,34,25,0.55);
+      z-index: 500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .modal-overlay.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .modal-panel {
+      background: var(--white);
+      width: 100%;
+      max-width: 600px;
+      max-height: 90vh;
+      overflow-y: auto;
+      border-radius: 6px;
+      padding: 40px 40px 48px;
+      transform: translateY(24px);
+      transition: transform 0.35s cubic-bezier(.4,0,.2,1);
+    }
+    .modal-overlay.open .modal-panel {
+      transform: translateY(0);
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 6px;
+    }
+    .modal-header h3 {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      color: var(--charcoal);
+    }
+    .modal-close {
+      font-size: 1.3rem;
+      color: var(--mid);
+      cursor: pointer;
+      background: none;
+      border: none;
+      line-height: 1;
+      padding: 4px;
+      transition: color var(--transition);
+    }
+    .modal-close:hover { color: var(--terracotta); }
+
+    .modal-sub {
+      font-size: 0.82rem;
+      color: var(--mid);
+      margin-bottom: 28px;
+      line-height: 1.6;
+    }
+    .modal-sub strong { color: var(--terracotta); }
+
+    .modal-product-ref {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: var(--blush);
+      padding: 12px 16px;
+      border-radius: 3px;
+      margin-bottom: 24px;
+    }
+    .modal-product-ref img {
+      width: 52px;
+      height: 52px;
+      object-fit: cover;
+      border-radius: 3px;
+      flex-shrink: 0;
+    }
+    .modal-product-ref-name {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--charcoal);
+    }
+    .modal-product-ref-price {
+      font-size: 0.8rem;
+      color: var(--mid);
+      margin-top: 2px;
+    }
+
+    .modal-form {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    .modal-form .full { grid-column: 1 / -1; }
+
+    .modal-field label {
+      display: block;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--charcoal);
+      margin-bottom: 6px;
+    }
+    .modal-field input,
+    .modal-field textarea,
+    .modal-field select {
+      width: 100%;
+      border: 1px solid var(--light-border);
+      padding: 10px 14px;
+      font-family: var(--font-body);
+      font-size: 0.88rem;
+      color: var(--charcoal);
+      background: var(--white);
+      outline: none;
+      border-radius: 2px;
+      transition: border-color var(--transition);
+      appearance: none;
+    }
+    .modal-field input:focus,
+    .modal-field textarea:focus,
+    .modal-field select:focus { border-color: var(--terracotta); }
+    .modal-field textarea { resize: vertical; min-height: 80px; }
+
+    .modal-submit {
+      grid-column: 1 / -1;
+      background: var(--charcoal);
+      color: var(--cream);
+      border: none;
+      padding: 15px;
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      cursor: pointer;
+      border-radius: 2px;
+      transition: background var(--transition);
+      margin-top: 4px;
+    }
+    .modal-submit:hover { background: var(--terracotta); }
+
+    .modal-disclaimer {
+      grid-column: 1 / -1;
+      font-size: 0.7rem;
+      color: var(--mid);
+      text-align: center;
+      line-height: 1.5;
+    }
+
+    /* You may also like */
+    .related-section {
+      background: var(--blush);
+      padding: 64px 0;
+    }
+    .related-section h2 {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      color: var(--charcoal);
+      text-align: center;
+      margin-bottom: 36px;
+    }
+    .related-grid {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 32px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+    }
+
+    /* Not found state */
+    .not-found {
+      text-align: center;
+      padding: 120px 32px;
+    }
+    .not-found h2 {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      color: var(--terracotta);
+      margin-bottom: 12px;
+    }
+    .not-found p { color: var(--mid); margin-bottom: 24px; }
+
+    /* Responsive */
+    @media (max-width: 860px) {
+      .product-page {
+        grid-template-columns: 1fr;
+        gap: 32px;
+        padding: 32px 20px 72px;
+      }
+      .product-image-col { position: static; }
+      .breadcrumb { margin-bottom: 0; }
+      .related-grid { grid-template-columns: repeat(2, 1fr); }
+      .modal-panel { padding: 28px 24px 40px; border-radius: 6px 6px 0 0; }
+      .modal-form { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 480px) {
+      .related-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Announcement Bar -->
+  <div class="announcement-bar" id="announcementBar">
+    <span>Sign up &amp; get 10% Off on your first purchase</span>
+    <button class="close-announcement" onclick="closeAnnouncement()" aria-label="Close">&times;</button>
+  </div>
+
+  <!-- Header / Nav -->
+  <header class="header" id="header">
+    <nav class="nav">
+      <div class="nav-left">
+        <a href="index.html" class="nav-link">Shop</a>
+        <a href="index.html#our-story" class="nav-link">Our Story</a>
+        <a href="index.html#contact" class="nav-link">Get in Touch</a>
+      </div>
+      <div class="nav-logo">
+        <a href="index.html">Imbokodo Marketplace</a>
+      </div>
+      <div class="nav-right">
+        <button class="icon-btn" onclick="openWishlist()" aria-label="Wishlist">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </button>
+        <button class="icon-btn cart-btn" onclick="openCart()" aria-label="Cart">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+          <span class="cart-count" id="cartCount">0</span>
+        </button>
+        <button class="icon-btn" onclick="openSearch()" aria-label="Search">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Search Overlay -->
+  <div class="search-overlay" id="searchOverlay">
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="Search products…" oninput="liveSearch(this.value)" />
+      <button onclick="closeSearch()">&#10005;</button>
+    </div>
+    <div class="search-results" id="searchResults"></div>
+  </div>
+
+  <!-- Product Page Content (injected by JS) -->
+  <div id="productPageRoot"></div>
+
+  <!-- Footer -->
+  <footer class="footer" id="contact">
+    <div class="container footer-grid">
+      <div class="footer-col">
+        <p class="footer-logo">Imbokodo Marketplace</p>
+        <p class="footer-tagline">Empowering South African women artisans through ethical commerce.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Navigate</h4>
+        <a href="index.html">Home</a>
+        <a href="shop.html">Shop</a>
+        <a href="index.html#our-story">Our Story</a>
+        <a href="index.html#contact">Get in Touch</a>
+      </div>
+      <div class="footer-col">
+        <h4>Get in Touch</h4>
+        <p>hello@imbokodo.co.za</p>
+        <p>Cape Town, South Africa</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 Imbokodo Marketplace. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Bulk Enquiry Modal -->
+  <div class="modal-overlay" id="bulkModal" onclick="closeBulkModal(event)">
+    <div class="modal-panel" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Corporate &amp; Bulk Enquiry</h3>
+        <button class="modal-close" onclick="closeBulkModal()">&times;</button>
+      </div>
+      <p class="modal-sub">
+        Ordering for your organisation's CSR programme or gifting initiative?
+        Bulk purchases qualify for <strong>B-BBEE procurement credits</strong> under the Enterprise &amp; Supplier Development pillar.
+        Complete the form and we'll respond within 1 business day.
+      </p>
+      <div class="modal-product-ref" id="bulkProductRef"></div>
+      <div class="modal-form" id="bulkForm">
+        <div class="modal-field">
+          <label>Company Name *</label>
+          <input type="text" id="bulk_company" placeholder="Acme (Pty) Ltd" required />
+        </div>
+        <div class="modal-field">
+          <label>Contact Person *</label>
+          <input type="text" id="bulk_contact" placeholder="Jane Dlamini" required />
+        </div>
+        <div class="modal-field">
+          <label>Work Email *</label>
+          <input type="email" id="bulk_email" placeholder="jane@acme.co.za" required />
+        </div>
+        <div class="modal-field">
+          <label>Units Required *</label>
+          <input type="number" id="bulk_qty" placeholder="50" min="10" required />
+        </div>
+        <div class="modal-field full">
+          <label>Additional Notes</label>
+          <textarea id="bulk_notes" placeholder="Custom packaging, delivery deadline, branding requirements…"></textarea>
+        </div>
+        <button class="modal-submit" onclick="submitBulkEnquiry()">Send Enquiry</button>
+        <p class="modal-disclaimer">
+          Your enquiry will be sent to hello@imbokodo.co.za. We never share your details with third parties.<br/>
+          Minimum bulk order: 10 units per product line.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <!-- Cart Sidebar -->
+  <div class="overlay" id="overlay" onclick="closeSidebars()"></div>
+  <aside class="sidebar cart-sidebar" id="cartSidebar">
+    <div class="sidebar-header">
+      <h3>Your Cart</h3>
+      <button onclick="closeCart()">&#10005;</button>
+    </div>
+    <div class="discount-row">
+      <input type="text" id="discountInput" placeholder="Discount code (try WINTER30)" />
+      <button onclick="applyDiscount()">Apply</button>
+    </div>
+    <p class="discount-msg" id="discountMsg"></p>
+    <div class="cart-items" id="cartItems">
+      <p class="empty-msg">Your cart is empty.</p>
+    </div>
+    <div class="cart-footer" id="cartFooter" style="display:none;">
+      <div class="cart-totals">
+        <span>Subtotal</span><span id="cartSubtotal">R 0</span>
+        <span id="discountLabel" style="display:none;color:var(--terracotta);">Discount</span>
+        <span id="discountAmt" style="display:none;color:var(--terracotta);"></span>
+        <span class="total-label">Total</span><span class="total-val" id="cartTotal">R 0</span>
+      </div>
+      <a href="checkout.html" class="btn-outline full-width">Proceed to Checkout</a>
+    </div>
+  </aside>
+
+  <!-- Wishlist Sidebar -->
+  <aside class="sidebar wishlist-sidebar" id="wishlistSidebar">
+    <div class="sidebar-header">
+      <h3>Your Wishlist</h3>
+      <button onclick="closeWishlist()">&#10005;</button>
+    </div>
+    <div class="cart-items" id="wishlistItems">
+      <p class="empty-msg">Your wishlist is empty.</p>
+    </div>
+  </aside>
+
+  <script src="app.js"></script>
+  <script>
+    /* Parse product from URL: product.html?id=7 */
+
+    let currentProduct = null;
+    let pdpQty = 1;
+
+    function getProductId() {
+      return parseInt(new URLSearchParams(window.location.search).get('id'), 10);
+    }
+
+    function pdpChangeQty(delta) {
+      pdpQty = Math.max(1, pdpQty + delta);
+      const el = document.getElementById('pdpQtyVal');
+      if (el) el.textContent = pdpQty;
+    }
+
+    function pdpAddToCart() {
+      if (!currentProduct) return;
+      for (let i = 0; i < pdpQty; i++) {
+        addToCart(currentProduct.id, currentProduct.name, currentProduct.price);
+      }
+      // addToCart toasts per item; override with a single clear message
+      showToast(`${pdpQty} × "${currentProduct.name.slice(0, 28)}…" added to cart`);
+      openCart();
+    }
+
+    function pdpToggleWishlist(btn) {
+      if (!currentProduct) return;
+      addToWishlist(currentProduct.id, currentProduct.name, currentProduct.price, btn);
+      const isNowWishlisted = btn.classList.contains('active');
+      const svg = btn.querySelector('svg');
+      if (svg) svg.setAttribute('fill', isNowWishlisted ? 'var(--terracotta)' : 'none');
+      const label = document.getElementById('pdpWishlistLabel');
+      if (label) label.textContent = isNowWishlisted ? 'Saved to Wishlist' : 'Add to Wishlist';
+    }
+
+    /* Bulk modal */
+    function openBulkModal() {
+      if (!currentProduct) return;
+      // Populate product reference strip
+      document.getElementById('bulkProductRef').innerHTML = `
+        <img src="${currentProduct.img}" alt="${currentProduct.name}" />
+        <div>
+          <div class="modal-product-ref-name">${currentProduct.name}</div>
+          <div class="modal-product-ref-price">${fmt(currentProduct.price)} per unit &nbsp;·&nbsp; Min. 10 units</div>
+        </div>
+      `;
+      document.getElementById('bulkModal').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeBulkModal(e) {
+      if (e && e.target !== document.getElementById('bulkModal')) return;
+      document.getElementById('bulkModal').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    // Also close on explicit button click (no event arg)
+    window._closeBulkModal = function() {
+      document.getElementById('bulkModal').classList.remove('open');
+      document.body.style.overflow = '';
+    };
+
+    function submitBulkEnquiry() {
+      const company = document.getElementById('bulk_company').value.trim();
+      const contact = document.getElementById('bulk_contact').value.trim();
+      const email   = document.getElementById('bulk_email').value.trim();
+      const qty     = document.getElementById('bulk_qty').value.trim();
+      const notes   = document.getElementById('bulk_notes').value.trim();
+
+      if (!company || !contact || !email || !qty) {
+        showToast('Please fill in all required fields.');
+        return;
+      }
+
+      const subject = encodeURIComponent(`Bulk Enquiry: ${currentProduct.name}`);
+      const body = encodeURIComponent(
+        `IMBOKODO MARKETPLACE — BULK / CSR ENQUIRY\n` +
+        `===========================================\n\n` +
+        `Product:       ${currentProduct.name}\n` +
+        `Unit Price:    ${fmt(currentProduct.price)}\n` +
+        `Units Required: ${qty}\n` +
+        `Est. Value:    ${fmt(currentProduct.price * parseInt(qty, 10))}\n\n` +
+        `Company:       ${company}\n` +
+        `Contact:       ${contact}\n` +
+        `Email:         ${email}\n\n` +
+        `Notes:\n${notes || '—'}\n\n` +
+        `---\nSent via Imbokodo Marketplace product page`
+      );
+
+      window.location.href = `mailto:hello@imbokodo.co.za?subject=${subject}&body=${body}`;
+      window._closeBulkModal();
+      showToast('Opening your email client…');
+    }
+
+    /* Render the full product page */
+    function renderProductPage() {
+      const id = getProductId();
+      const product = PRODUCTS.find(p => p.id === id);
+      const root = document.getElementById('productPageRoot');
+
+      if (!product) {
+        document.title = 'Product Not Found — Imbokodo Marketplace';
+        root.innerHTML = `
+          <div class="not-found container section-pad">
+            <h2>Product not found</h2>
+            <p>That product doesn't exist or may have been removed.</p>
+            <a href="shop.html" class="btn-primary">Back to Shop</a>
+          </div>`;
+        return;
+      }
+
+      currentProduct = product;
+      document.title = `${product.name} — Imbokodo Marketplace`;
+
+      const isWishlisted = !!wishlist.find(w => w.id === product.id);
+      const saving = product.sale ? product.originalPrice - product.price : 0;
+      const savingPct = product.sale ? Math.round(saving / product.originalPrice * 100) : 0;
+
+      root.innerHTML = `
+        <!-- Product Detail -->
+        <main>
+          <div class="product-page">
+
+            <!-- Breadcrumb -->
+            <nav class="breadcrumb" aria-label="Breadcrumb">
+              <a href="index.html">Home</a>
+              <span>›</span>
+              <a href="shop.html">Shop</a>
+              <span>›</span>
+              <a href="shop.html">${categoryLabel(product.category)}</a>
+              <span>›</span>
+              <span style="color:var(--charcoal)">${product.name}</span>
+            </nav>
+
+            <!-- Image Column -->
+            <div class="product-image-col">
+              <div class="product-main-img-wrap">
+                <img src="${product.img}" alt="${product.name}" id="pdpMainImg" />
+
+                ${product.sale ? `<span class="product-sale-badge">SALE — Save ${savingPct}%</span>` : ''}
+
+                <!-- NGO Verified Badge -->
+                <a class="ngo-badge" href="https://www.genderlinks.org.za/what-we-do/end-violence-empower-women/sunrise-campaign" target="_blank" rel="noopener" title="Gender Links Sunrise Campaign — verified seller">
+                  <img class="ngo-badge-logo" src="images/gender-links-badge.png" alt="Gender Links — For Equality and Justice" />
+                  <div class="ngo-badge-label">✓ NGO Verified Seller</div>
+                  <div class="ngo-badge-sub">Sunrise Campaign</div>
+                </a>
+              </div>
+            </div>
+
+            <!-- Info Column -->
+            <div class="product-info-col">
+
+              <p class="product-category-tag">${categoryLabel(product.category)}</p>
+              <h1 class="product-title">${product.name}</h1>
+
+              <div class="product-price-block">
+                <span class="pdp-price">${fmt(product.price)}</span>
+                ${product.sale ? `
+                  <span class="pdp-original">${fmt(product.originalPrice)}</span>
+                  <span class="pdp-saving">Save ${savingPct}%</span>
+                ` : ''}
+              </div>
+
+              <hr class="pdp-divider" />
+
+              <p class="product-description">${product.description}</p>
+
+              <div class="artisan-note">
+                <strong>Artisan Impact</strong>
+                88% of proceeds go directly to the woman artisan who made this piece. Your purchase contributes to her financial independence and economic exit from vulnerability.
+              </div>
+
+              <!-- Quantity -->
+              <p class="qty-label">Quantity</p>
+              <div class="qty-row">
+                <div class="pdp-qty-control">
+                  <button onclick="pdpChangeQty(-1)" aria-label="Decrease">&#8722;</button>
+                  <span id="pdpQtyVal">1</span>
+                  <button onclick="pdpChangeQty(+1)" aria-label="Increase">&#43;</button>
+                </div>
+                <span class="stock-note">In stock — ships within 3–5 business days</span>
+              </div>
+
+              <!-- CTAs -->
+              <div class="pdp-cta">
+                <button class="btn-add-cart-pdp" onclick="pdpAddToCart()">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+                  Add to Cart
+                </button>
+                <button class="btn-wishlist-pdp${isWishlisted ? ' active' : ''}" id="pdpWishlistBtn" onclick="pdpToggleWishlist(this)">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="${isWishlisted ? 'var(--terracotta)' : 'none'}" stroke="currentColor" stroke-width="1.8"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                  <span id="pdpWishlistLabel">${isWishlisted ? 'Saved to Wishlist' : 'Add to Wishlist'}</span>
+                </button>
+              </div>
+
+              <!-- Bulk / CSR -->
+              <button class="btn-bulk" onclick="openBulkModal()">
+                Bulk / Corporate CSR Enquiry
+              </button>
+              <p class="bbee-note">Counts towards <span>B-BBEE ESD &amp;</span> - audit-ready documentation provided via email</p>
+
+              <!-- Meta -->
+              <div class="pdp-meta">
+                <div class="pdp-meta-row">
+                  <span class="pdp-meta-key">Category</span>
+                  <span class="pdp-meta-val">${categoryLabel(product.category)}</span>
+                </div>
+                <div class="pdp-meta-row">
+                  <span class="pdp-meta-key">Origin</span>
+                  <span class="pdp-meta-val">South Africa</span>
+                </div>
+                <div class="pdp-meta-row">
+                  <span class="pdp-meta-key">Made by</span>
+                  <span class="pdp-meta-val">Women artisans, NGO-verified</span>
+                </div>
+                <div class="pdp-meta-row">
+                  <span class="pdp-meta-key">Partner NGO</span>
+                  <span class="pdp-meta-val"><a href="https://www.genderlinks.org.za/what-we-do/end-violence-empower-women/sunrise-campaign" target="_blank" style="color:var(--terracotta);text-decoration:underline;">Gender Links — Sunrise Campaign</a></span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </main>
+
+        <!-- Related Products -->
+        <section class="related-section">
+          <div>
+            <h2>You may also like</h2>
+            <div class="related-grid" id="relatedGrid"></div>
+          </div>
+        </section>
+      `;
+
+      // Render related products (same category, excluding current)
+      const related = PRODUCTS
+        .filter(p => p.category === product.category && p.id !== product.id)
+        .slice(0, 4);
+
+      // Pad with other categories if not enough in same category
+      if (related.length < 4) {
+        const others = PRODUCTS
+          .filter(p => p.id !== product.id && !related.find(r => r.id === p.id))
+          .slice(0, 4 - related.length);
+        related.push(...others);
+      }
+
+      const relGrid = document.getElementById('relatedGrid');
+      if (relGrid) {
+        relGrid.innerHTML = related.map(p => `
+          <div class="product-card" onclick="window.location.href='product.html?id=${p.id}'">
+            <div class="product-img-wrap">
+              <img src="${p.img}" alt="${p.name}" loading="lazy" />
+              ${p.sale ? '<span class="sale-badge">SALE</span>' : ''}
+              <div class="product-actions">
+                <button class="btn-wishlist${wishlist.find(w=>w.id===p.id)?' active':''}"
+                  onclick="event.stopPropagation(); addToWishlist(${p.id},'${safeAttr(p.name)}',${p.price},this)"
+                  title="Wishlist">&#9825;</button>
+                <button class="btn-quick-add"
+                  onclick="event.stopPropagation(); addToCart(${p.id},'${safeAttr(p.name)}',${p.price})">Add to Cart</button>
+              </div>
+            </div>
+            <div class="product-info">
+              <p class="product-name">${p.name}</p>
+              <div class="price-row">
+                <p class="product-price">${fmt(p.price)}</p>
+                ${p.sale ? `<p class="product-price-original">${fmt(p.originalPrice)}</p>` : ''}
+              </div>
+            </div>
+          </div>
+        `).join('');
+      }
+    }
+
+    // ── Also make product cards on shop/index link through to product page ──
+    // Patch shop grid cards to be clickable — fires after app.js renders them.
+    // We override renderShopGrid from app.js to wrap each card with a link click.
+    // This is done by delegating clicks on the shop grid.
+    document.addEventListener('click', function(e) {
+      const card = e.target.closest('.product-card[data-id]');
+      if (!card) return;
+      // Don't intercept button clicks inside the card
+      if (e.target.closest('button')) return;
+      const id = card.getAttribute('data-id');
+      if (id) window.location.href = `product.html?id=${id}`;
+    });
+
+    // ── Init ──
+    document.addEventListener('DOMContentLoaded', renderProductPage);
+  </script>
+</body>
+</html>

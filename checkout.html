@@ -1,0 +1,1604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Checkout - Imbokodo Marketplace</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    /* CHECKOUT — page-specific styles */
+
+    /* Progress Bar */
+    .checkout-progress {
+      background: var(--white);
+      border-bottom: 1px solid var(--light-border);
+      padding: 0 32px;
+    }
+    .progress-inner {
+      max-width: 860px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      padding: 20px 0;
+    }
+    .progress-step {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      color: var(--mid);
+      transition: color var(--transition);
+    }
+    .progress-step.active { color: var(--terracotta); }
+    .progress-step.done   { color: var(--charcoal); }
+
+    .step-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 1.5px solid var(--light-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      font-weight: 700;
+      transition: background var(--transition), border-color var(--transition), color var(--transition);
+      flex-shrink: 0;
+    }
+    .progress-step.active .step-num {
+      background: var(--terracotta);
+      border-color: var(--terracotta);
+      color: var(--white);
+    }
+    .progress-step.done .step-num {
+      background: var(--charcoal);
+      border-color: var(--charcoal);
+      color: var(--white);
+    }
+    .progress-connector {
+      width: 48px;
+      height: 1px;
+      background: var(--light-border);
+      margin: 0 8px;
+      flex-shrink: 0;
+    }
+    .progress-connector.done { background: var(--charcoal); }
+
+    /* Layout */
+    .checkout-body {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 48px 32px 56px;
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 48px;
+      align-items: start;
+    }
+
+    /* Steps */
+    .checkout-step { display: none; }
+    .checkout-step.active { display: block; }
+
+    /* Section headings */
+    .co-heading {
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      color: var(--charcoal);
+      margin-bottom: 8px;
+    }
+    .co-sub {
+      font-size: 0.82rem;
+      color: var(--mid);
+      margin-bottom: 32px;
+      letter-spacing: 0.02em;
+    }
+
+    /* Form Fields */
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .form-grid .full { grid-column: 1 / -1; }
+
+    .form-field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .form-field label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      color: var(--charcoal);
+    }
+    .form-field input,
+    .form-field select {
+      border: 1px solid var(--light-border);
+      background: var(--white);
+      padding: 11px 14px;
+      font-family: var(--font-body);
+      font-size: 0.88rem;
+      color: var(--charcoal);
+      outline: none;
+      border-radius: 2px;
+      transition: border-color var(--transition);
+      width: 100%;
+      appearance: none;
+    }
+    .form-field input::placeholder { color: #b0a090; }
+    .form-field input:focus,
+    .form-field select:focus { border-color: var(--terracotta); }
+    .form-field input.error { border-color: #e35336; }
+
+    /* Card fields row */
+    .card-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    /* Payment section divider */
+    .pay-section-label {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--mid);
+      margin: 28px 0 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .pay-section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--light-border);
+    }
+
+    /* Card type icons strip */
+    .card-icons {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+    .card-icon {
+      border: 1px solid var(--light-border);
+      border-radius: 4px;
+      padding: 4px 8px;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      color: var(--mid);
+    }
+
+    /* Solidarity Add-On */
+    .solidarity-box {
+      margin-top: 32px;
+      border: 1.5px solid var(--light-border);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .solidarity-header {
+      background: var(--blush);
+      padding: 16px 20px;
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+    }
+    .solidarity-toggle {
+      width: 20px;
+      height: 20px;
+      border: 1.5px solid var(--terracotta);
+      border-radius: 3px;
+      flex-shrink: 0;
+      margin-top: 2px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background var(--transition);
+      background: var(--white);
+    }
+    .solidarity-toggle.checked {
+      background: var(--terracotta);
+    }
+    .solidarity-toggle.checked::after {
+      content: '✓';
+      color: var(--white);
+      font-size: 0.72rem;
+      font-weight: 700;
+    }
+    .solidarity-header-text h4 {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--charcoal);
+      margin-bottom: 4px;
+      letter-spacing: 0.02em;
+    }
+    .solidarity-header-text p {
+      font-size: 0.78rem;
+      color: var(--mid);
+      line-height: 1.55;
+    }
+    .solidarity-header-text p strong { color: var(--terracotta); }
+
+    .solidarity-body {
+      padding: 20px;
+      display: none;
+      border-top: 1px solid var(--light-border);
+    }
+    .solidarity-body.open { display: block; }
+
+    .solidarity-chips {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+    .chip {
+      border: 1.5px solid var(--light-border);
+      border-radius: 20px;
+      padding: 6px 16px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--mid);
+      cursor: pointer;
+      transition: border-color var(--transition), color var(--transition), background var(--transition);
+      background: var(--white);
+    }
+    .chip:hover { border-color: var(--terracotta); color: var(--terracotta); }
+    .chip.selected {
+      border-color: var(--terracotta);
+      background: var(--terracotta);
+      color: var(--white);
+    }
+
+    .solidarity-custom {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .solidarity-custom span {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--charcoal);
+    }
+    .solidarity-custom input {
+      border: 1px solid var(--light-border);
+      border-radius: 2px;
+      padding: 9px 12px;
+      font-family: var(--font-body);
+      font-size: 0.88rem;
+      color: var(--charcoal);
+      width: 110px;
+      outline: none;
+      transition: border-color var(--transition);
+    }
+    .solidarity-custom input:focus { border-color: var(--terracotta); }
+
+    .solidarity-match-note {
+      margin-top: 12px;
+      font-size: 0.76rem;
+      color: var(--mid);
+      line-height: 1.55;
+      background: #fdf0ec;
+      padding: 10px 14px;
+      border-radius: 3px;
+    }
+    .solidarity-match-note strong { color: var(--terracotta); }
+
+    /* Nav Buttons */
+    .co-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 36px;
+      gap: 16px;
+    }
+    .btn-back {
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--mid);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: color var(--transition);
+    }
+    .btn-back:hover { color: var(--charcoal); }
+
+    .btn-co-primary {
+      background: var(--terracotta);
+      color: var(--white);
+      border: none;
+      padding: 14px 32px;
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      cursor: pointer;
+      border-radius: 2px;
+      transition: background var(--transition);
+    }
+    .btn-co-primary:hover { background: var(--terracotta-dark); }
+    .btn-co-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    /* Order Summary Sidebar */
+    .order-summary {
+      position: sticky;
+      top: calc(var(--nav-h) + 24px);
+      background: var(--white);
+      border: 1px solid var(--light-border);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .os-header {
+      background: var(--blush);
+      padding: 18px 24px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--charcoal);
+    }
+    .os-items {
+      padding: 16px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      border-bottom: 1px solid var(--light-border);
+      max-height: 320px;
+      overflow-y: auto;
+    }
+    .os-item {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+    .os-item-img {
+      width: 52px;
+      height: 52px;
+      object-fit: cover;
+      border-radius: 3px;
+      flex-shrink: 0;
+      background: var(--blush);
+    }
+    .os-item-name {
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--charcoal);
+      line-height: 1.4;
+      flex: 1;
+    }
+    .os-item-qty {
+      font-size: 0.72rem;
+      color: var(--mid);
+      margin-top: 3px;
+    }
+    .os-item-price {
+      font-family: var(--font-display);
+      font-size: 0.9rem;
+      color: var(--charcoal);
+      flex-shrink: 0;
+    }
+
+    .os-totals {
+      padding: 16px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .os-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.82rem;
+      color: var(--mid);
+    }
+    .os-row.total {
+      font-size: 1rem;
+      color: var(--charcoal);
+      font-weight: 700;
+      padding-top: 10px;
+      border-top: 1px solid var(--light-border);
+      margin-top: 2px;
+    }
+    .os-row.total span:last-child { font-family: var(--font-display); font-size: 1.1rem; }
+    .os-row .discount-val { color: var(--terracotta); font-weight: 600; }
+    .os-row .solidarity-val { color: var(--terracotta); font-weight: 600; }
+
+    .os-secure {
+      padding: 12px 24px 16px;
+      border-top: 1px solid var(--light-border);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.7rem;
+      color: var(--mid);
+      letter-spacing: 0.03em;
+    }
+    .os-secure svg { flex-shrink: 0; opacity: 0.5; }
+
+    /* Cart Review (Step 1) */
+    .cart-review-items {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      border: 1px solid var(--light-border);
+      border-radius: 3px;
+      overflow: hidden;
+      margin-bottom: 24px;
+    }
+    .cr-item {
+      display: flex;
+      gap: 16px;
+      padding: 18px 20px;
+      border-bottom: 1px solid var(--light-border);
+      align-items: center;
+      background: var(--white);
+      transition: background var(--transition);
+    }
+    .cr-item:last-child { border-bottom: none; }
+    .cr-item:hover { background: var(--cream); }
+    .cr-img {
+      width: 72px;
+      height: 72px;
+      object-fit: cover;
+      border-radius: 3px;
+      flex-shrink: 0;
+      background: var(--blush);
+    }
+    .cr-info { flex: 1; }
+    .cr-name {
+      font-size: 0.88rem;
+      font-weight: 500;
+      color: var(--charcoal);
+      margin-bottom: 4px;
+    }
+    .cr-cat {
+      font-size: 0.7rem;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--mid);
+      margin-bottom: 10px;
+    }
+    .cr-qty-control {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      border: 1px solid var(--light-border);
+      border-radius: 2px;
+      width: fit-content;
+    }
+    .cr-qty-control button {
+      width: 32px;
+      height: 32px;
+      font-size: 1rem;
+      color: var(--charcoal);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: none;
+      border: none;
+      transition: background var(--transition), color var(--transition);
+    }
+    .cr-qty-control button:hover { background: var(--blush); color: var(--terracotta); }
+    .cr-qty-control span {
+      min-width: 36px;
+      text-align: center;
+      font-size: 0.85rem;
+      font-weight: 600;
+      border-left: 1px solid var(--light-border);
+      border-right: 1px solid var(--light-border);
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .cr-right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 8px;
+    }
+    .cr-price {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--charcoal);
+    }
+    .cr-remove {
+      font-size: 0.7rem;
+      color: var(--mid);
+      text-decoration: underline;
+      cursor: pointer;
+      transition: color var(--transition);
+    }
+    .cr-remove:hover { color: var(--terracotta); }
+
+    .cart-empty-co {
+      text-align: center;
+      padding: 60px 24px;
+      color: var(--mid);
+    }
+    .cart-empty-co h3 {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      color: var(--terracotta);
+      margin-bottom: 10px;
+    }
+
+    /* Discount row in step 1 */
+    .co-discount-row {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+    .co-discount-row input {
+      flex: 1;
+      border: 1px solid var(--light-border);
+      padding: 10px 14px;
+      font-size: 0.85rem;
+      font-family: var(--font-body);
+      color: var(--charcoal);
+      outline: none;
+      border-radius: 2px;
+      transition: border-color var(--transition);
+    }
+    .co-discount-row input:focus { border-color: var(--terracotta); }
+    .co-discount-row button {
+      background: var(--charcoal);
+      color: var(--white);
+      padding: 0 20px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      border-radius: 2px;
+      border: none;
+      cursor: pointer;
+      transition: background var(--transition);
+    }
+    .co-discount-row button:hover { background: var(--terracotta); }
+    .co-discount-msg { font-size: 0.78rem; min-height: 16px; margin-bottom: 4px; }
+
+    /* Confirmation Screen */
+    .confirmation-wrap {
+      grid-column: 1 / -1;
+      max-width: 760px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .confirm-tick {
+      width: 64px;
+      height: 64px;
+      background: var(--terracotta);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px;
+      animation: popIn 0.5s cubic-bezier(.4,0,.2,1) both;
+    }
+    @keyframes popIn {
+      from { transform: scale(0.4); opacity: 0; }
+      to   { transform: scale(1);   opacity: 1; }
+    }
+    .confirm-tick svg { color: var(--white); }
+
+    .confirm-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 3vw, 2.4rem);
+      color: var(--charcoal);
+      text-align: center;
+      margin-bottom: 8px;
+    }
+    .confirm-ref {
+      text-align: center;
+      font-size: 0.78rem;
+      color: var(--mid);
+      letter-spacing: 0.05em;
+      margin-bottom: 40px;
+    }
+    .confirm-ref strong { color: var(--charcoal); }
+
+    /* Impact Report Card */
+    .impact-report {
+      border: 1.5px solid var(--light-border);
+      border-radius: 6px;
+      overflow: hidden;
+      margin-bottom: 28px;
+      animation: fadeUp 0.6s 0.2s ease both;
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .ir-header {
+      background: var(--charcoal);
+      padding: 20px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .ir-header-left h3 {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      color: var(--white);
+      margin-bottom: 3px;
+    }
+    .ir-header-left p {
+      font-size: 0.72rem;
+      color: rgba(250,245,239,0.6);
+      letter-spacing: 0.04em;
+    }
+
+    .ir-ngo-badge {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      background: var(--white);
+      border: 2px solid var(--terracotta);
+      padding: 8px 12px;
+      border-radius: 4px;
+      flex-shrink: 0;
+      gap: 4px;
+    }
+    .ir-ngo-badge img {
+      width: 72px;
+      height: auto;
+    }
+    .ir-ngo-badge span {
+      font-size: 0.55rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--charcoal);
+      line-height: 1.3;
+    }
+
+    .ir-body {
+      padding: 28px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .ir-stat {
+      background: var(--blush);
+      border-radius: 4px;
+      padding: 18px 20px;
+    }
+    .ir-stat-label {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--mid);
+      margin-bottom: 8px;
+    }
+    .ir-stat-value {
+      font-family: var(--font-display);
+      font-size: 1.7rem;
+      font-weight: 700;
+      color: var(--terracotta);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .ir-stat-detail {
+      font-size: 0.76rem;
+      color: var(--mid);
+      line-height: 1.5;
+    }
+
+    .ir-stat.solidarity-stat {
+      grid-column: 1 / -1;
+      background: #fff5f3;
+      border: 1px solid #fbd5ca;
+    }
+    .ir-stat.solidarity-stat .ir-stat-label { color: var(--terracotta); }
+
+    .ir-solidarity-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .ir-solidarity-amount {
+      display: flex;
+      flex-direction: column;
+    }
+    .ir-solidarity-amount .ir-stat-value { font-size: 1.4rem; }
+
+    .ir-match-pill {
+      background: var(--terracotta);
+      color: var(--white);
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      padding: 5px 12px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      flex-shrink: 0;
+    }
+
+    .ir-order-summary {
+      grid-column: 1 / -1;
+      border-top: 1px solid var(--light-border);
+      padding-top: 18px;
+    }
+    .ir-order-summary-label {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--mid);
+      margin-bottom: 12px;
+    }
+    .ir-order-items {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .ir-order-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.82rem;
+      color: var(--charcoal);
+    }
+    .ir-order-item span:last-child {
+      font-family: var(--font-display);
+      font-weight: 600;
+    }
+    .ir-order-total {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid var(--light-border);
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--charcoal);
+    }
+    .ir-order-total span:last-child {
+      font-family: var(--font-display);
+      font-size: 1rem;
+    }
+
+    /* Confirmation CTA row */
+    .confirm-cta {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 8px;
+      animation: fadeUp 0.6s 0.4s ease both;
+    }
+
+    .btn-share {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--charcoal);
+      color: var(--cream);
+      border: none;
+      padding: 13px 24px;
+      font-family: var(--font-body);
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      cursor: pointer;
+      border-radius: 2px;
+      transition: background var(--transition);
+    }
+    .btn-share:hover { background: var(--terracotta); }
+
+    .share-copied {
+      position: fixed;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: var(--charcoal);
+      color: var(--cream);
+      padding: 10px 22px;
+      font-size: 0.8rem;
+      border-radius: 3px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s, transform 0.3s;
+      z-index: 400;
+    }
+    .share-copied.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* Responsive */
+    @media (max-width: 860px) {
+      .checkout-body {
+        grid-template-columns: 1fr;
+        padding: 32px 20px 72px;
+      }
+      .order-summary { position: static; }
+      .confirmation-wrap { grid-column: auto; }
+      .ir-body { grid-template-columns: 1fr; }
+      .ir-stat.solidarity-stat { grid-column: auto; }
+      .form-grid { grid-template-columns: 1fr; }
+      .form-grid .full { grid-column: auto; }
+    }
+    @media (max-width: 520px) {
+      .progress-step span.step-label { display: none; }
+      .progress-connector { width: 28px; }
+      .confirm-cta { flex-direction: column; align-items: stretch; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Announcement Bar -->
+  <div class="announcement-bar" id="announcementBar">
+    <span>Sign up &amp; get 10% Off on your first purchase</span>
+    <button class="close-announcement" onclick="closeAnnouncement()" aria-label="Close">&times;</button>
+  </div>
+
+  <!-- Header -->
+  <header class="header" id="header">
+    <nav class="nav">
+      <div class="nav-left">
+        <a href="shop.html" class="nav-link">Shop</a>
+        <a href="index.html#our-story" class="nav-link">Our Story</a>
+        <a href="index.html#contact" class="nav-link">Get in Touch</a>
+      </div>
+      <div class="nav-logo">
+        <a href="index.html">Imbokodo Marketplace</a>
+      </div>
+      <div class="nav-right">
+        <button class="icon-btn" onclick="openWishlist()" aria-label="Wishlist">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </button>
+        <button class="icon-btn cart-btn" onclick="openCart()" aria-label="Cart">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+          <span class="cart-count" id="cartCount">0</span>
+        </button>
+        <button class="icon-btn" onclick="openSearch()" aria-label="Search">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Search Overlay -->
+  <div class="search-overlay" id="searchOverlay">
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="Search products…" oninput="liveSearch(this.value)" />
+      <button onclick="closeSearch()">&#10005;</button>
+    </div>
+    <div class="search-results" id="searchResults"></div>
+  </div>
+
+  <!-- Progress Bar -->
+  <div class="checkout-progress" id="checkoutProgress">
+    <div class="progress-inner">
+      <div class="progress-step active" id="prog-1">
+        <span class="step-num">1</span>
+        <span class="step-label">Cart</span>
+      </div>
+      <div class="progress-connector" id="conn-1"></div>
+      <div class="progress-step" id="prog-2">
+        <span class="step-num">2</span>
+        <span class="step-label">Delivery</span>
+      </div>
+      <div class="progress-connector" id="conn-2"></div>
+      <div class="progress-step" id="prog-3">
+        <span class="step-num">3</span>
+        <span class="step-label">Payment</span>
+      </div>
+      <div class="progress-connector" id="conn-3"></div>
+      <div class="progress-step" id="prog-4">
+        <span class="step-num">4</span>
+        <span class="step-label">Confirmation</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Checkout Body -->
+  <div class="checkout-body" id="checkoutBody">
+
+    <!-- STEP 1: Cart Review -->
+    <div class="checkout-step active" id="step1">
+      <h2 class="co-heading">Your Cart</h2>
+      <p class="co-sub">Review your items before proceeding</p>
+
+      <div id="cartReviewItems" class="cart-review-items"></div>
+
+      <div class="co-discount-row">
+        <input type="text" id="coDiscountInput" placeholder="Discount code (try WINTER30)" />
+        <button onclick="coApplyDiscount()">Apply</button>
+      </div>
+      <p class="co-discount-msg" id="coDiscountMsg"></p>
+
+      <div class="co-nav">
+        <a href="shop.html" class="btn-back">Go Back to Continue Shopping</a>
+        <button class="btn-co-primary" onclick="goToStep(2)" id="btnStep1Next">Proceed to Delivery</button>
+      </div>
+    </div>
+
+    <!-- STEP 2: Delivery Details -->
+    <div class="checkout-step" id="step2">
+      <h2 class="co-heading">Delivery Details</h2>
+      <p class="co-sub">Where should we send your order?</p>
+
+      <div class="form-grid">
+        <div class="form-field">
+          <label>First Name *</label>
+          <input type="text" id="del_fname" placeholder="Priya" />
+        </div>
+        <div class="form-field">
+          <label>Last Name *</label>
+          <input type="text" id="del_lname" placeholder="Krishnamurthy" />
+        </div>
+        <div class="form-field full">
+          <label>Email Address *</label>
+          <input type="email" id="del_email" placeholder="priya@example.com" />
+        </div>
+        <div class="form-field full">
+          <label>Phone Number *</label>
+          <input type="tel" id="del_phone" placeholder="+27 82 000 0000" />
+        </div>
+        <div class="form-field full">
+          <label>Street Address *</label>
+          <input type="text" id="del_street" placeholder="12 Buitenkant Street" />
+        </div>
+        <div class="form-field">
+          <label>Suburb</label>
+          <input type="text" id="del_suburb" placeholder="Gardens" />
+        </div>
+        <div class="form-field">
+          <label>City *</label>
+          <input type="text" id="del_city" placeholder="Cape Town" />
+        </div>
+        <div class="form-field">
+          <label>Province *</label>
+          <select id="del_province">
+            <option value="">Select Province</option>
+            <option>Western Cape</option>
+            <option>Gauteng</option>
+            <option>KwaZulu-Natal</option>
+            <option>Eastern Cape</option>
+            <option>Limpopo</option>
+            <option>Mpumalanga</option>
+            <option>North West</option>
+            <option>Free State</option>
+            <option>Northern Cape</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label>Postal Code *</label>
+          <input type="text" id="del_postal" placeholder="8001" />
+        </div>
+      </div>
+
+      <div class="co-nav">  
+        <button class="btn-back" onclick="goToStep(1)">Go Back to Cart</button>
+        <button class="btn-co-primary" onclick="validateDelivery()">Continue to Payment</button>
+      </div>
+    </div>
+
+    <!-- STEP 3: Payment -->
+    <div class="checkout-step" id="step3">
+      <h2 class="co-heading">Payment</h2>
+      <p class="co-sub">Enter your card details to complete your purchase</p>
+
+      <div class="card-icons">
+        <span class="card-icon">VISA</span>
+        <span class="card-icon">MC</span>
+        <span class="card-icon">AMEX</span>
+        <span class="card-icon">MAESTRO</span>
+      </div>
+
+      <div class="form-grid">
+        <div class="form-field full">
+          <label>Cardholder Name *</label>
+          <input type="text" id="pay_name" placeholder="P Krishnamurthy" />
+        </div>
+        <div class="form-field full">
+          <label>Card Number *</label>
+          <input type="text" id="pay_card" placeholder="1234 5678 9012 3456" maxlength="19" oninput="formatCardNumber(this)" />
+        </div>
+        <div class="form-field">
+          <label>Expiry Date *</label>
+          <input type="text" id="pay_expiry" placeholder="MM / YY" maxlength="7" oninput="formatExpiry(this)" />
+        </div>
+        <div class="form-field">
+          <label>CVV *</label>
+          <input type="text" id="pay_cvv" placeholder="•••" maxlength="4" />
+        </div>
+      </div>
+
+      <!-- Solidarity Add-On -->
+      <div class="solidarity-box" id="solidarityBox">
+        <div class="solidarity-header" onclick="toggleSolidarity()">
+          <div class="solidarity-toggle" id="solidarityToggle"></div>
+          <div class="solidarity-header-text">
+            <h4>Add a Solidarity Contribution</h4>
+            <p>100% goes to the <strong>Seller Development Fund &amp; Gender Links Sunrise Campaign</strong>. Imbokodo <strong>matches every rand you give</strong>.</p>
+          </div>
+        </div>
+        <div class="solidarity-body" id="solidarityBody">
+          <p style="font-size:0.78rem;color:var(--mid);margin-bottom:14px;line-height:1.6;">Choose a preset amount or enter your own. This is entirely optional and separate from your purchase.</p>
+          <div class="solidarity-chips" id="solidarityChips">
+            <button class="chip" onclick="selectChip(this, 10)">R 10</button>
+            <button class="chip" onclick="selectChip(this, 25)">R 25</button>
+            <button class="chip" onclick="selectChip(this, 50)">R 50</button>
+            <button class="chip" onclick="selectChip(this, 100)">R 100</button>
+          </div>
+          <div class="solidarity-custom">
+            <span>R</span>
+            <input type="number" id="solidarityAmount" placeholder="Other amount" min="1" oninput="onCustomSolidarity()" />
+          </div>
+          <div class="solidarity-match-note" id="solidarityMatchNote" style="display:none;">
+            You're contributing <strong id="solidarityContribDisplay"></strong> — Imbokodo will match this, making the total impact <strong id="solidarityTotalImpact"></strong> for women artisans and the Sunrise Campaign.
+          </div>
+        </div>
+      </div>
+
+      <div class="co-nav">
+        <button class="btn-back" onclick="goToStep(2)">Go Back to Delivery</button>
+        <button class="btn-co-primary" onclick="validatePayment()">Place Order</button>
+      </div>
+    </div>
+
+    <!-- STEP 4: Confirmation -->
+    <div class="checkout-step" id="step4">
+      <div class="confirmation-wrap">
+
+        <div class="confirm-tick">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+
+        <h2 class="confirm-title">Thank you, <span id="confirmName">there</span>.</h2>
+        <p class="confirm-ref">Order <strong id="confirmRef"></strong> · Confirmation sent to <strong id="confirmEmail"></strong></p>
+
+        <!-- Impact Report -->
+        <div class="impact-report">
+          <div class="ir-header">
+            <div class="ir-header-left">
+              <h3>Your Impact Report</h3>
+              <p>Verified by Gender Links — Sunrise Campaign</p>
+            </div>
+            <div class="ir-ngo-badge">
+              <img src="images/gender-links-badge.png" alt="Gender Links" />
+              <span>✓ NGO Verified</span>
+            </div>
+          </div>
+
+          <div class="ir-body">
+
+            <div class="ir-stat">
+              <div class="ir-stat-label">Total Spent</div>
+              <div class="ir-stat-value" id="irTotalSpent">—</div>
+              <div class="ir-stat-detail">Paid directly to artisan sellers, zero intermediary cut</div>
+            </div>
+
+            <div class="ir-stat">
+              <div class="ir-stat-label">Artisans Supported</div>
+              <div class="ir-stat-value" id="irArtisans">—</div>
+              <div class="ir-stat-detail">Women artisans whose financial independence your purchase advances</div>
+            </div>
+
+            <div class="ir-stat">
+              <div class="ir-stat-label">Products Purchased</div>
+              <div class="ir-stat-value" id="irProductCount">—</div>
+              <div class="ir-stat-detail">Handcrafted pieces, each verified as human-made</div>
+            </div>
+
+            <div class="ir-stat">
+              <div class="ir-stat-label">Economic Exit Score</div>
+              <div class="ir-stat-value" id="irExitScore">—</div>
+              <div class="ir-stat-detail">Estimated days of financial independence enabled per artisan</div>
+            </div>
+
+            <!-- Solidarity stat (shown conditionally) -->
+            <div class="ir-stat solidarity-stat" id="irSolidarityStatRow" style="display:none;">
+              <div class="ir-stat-label">Solidarity Contribution</div>
+              <div class="ir-solidarity-row">
+                <div class="ir-solidarity-amount">
+                  <div class="ir-stat-value" id="irSolidarity">—</div>
+                  <div class="ir-stat-detail">Seller Development Fund &amp; Gender Links Sunrise Campaign</div>
+                </div>
+                <div>
+                  <div class="ir-match-pill" id="irMatchPill">+ R— matched</div>
+                  <div style="font-size:0.68rem;color:var(--mid);margin-top:4px;text-align:center;">by Imbokodo</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Order breakdown -->
+            <div class="ir-order-summary">
+              <div class="ir-order-summary-label">Order Breakdown</div>
+              <div class="ir-order-items" id="irOrderItems"></div>
+              <div class="ir-order-total">
+                <span>Order Total</span>
+                <span id="irOrderTotal">—</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- CTAs -->
+        <div class="confirm-cta">
+          <a href="impact.html" class="btn-outline">View Impact Tracker</a>
+          <button class="btn-share" onclick="shareImpact()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+            Share Your Impact
+          </button>
+          <a href="shop.html" class="btn-co-primary" style="text-decoration:none;display:inline-flex;align-items:center;justify-content:center;">Continue Shopping</a>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Order Summary Sidebar (steps 1–3) -->
+    <aside class="order-summary" id="orderSummarySidebar">
+      <div class="os-header">Order Summary</div>
+      <div class="os-items" id="osSidebarItems"></div>
+      <div class="os-totals" id="osSidebarTotals"></div>
+      <div class="os-secure">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        Secure checkout · SSL encrypted
+      </div>
+    </aside>
+
+  </div><!-- /checkout-body -->
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div class="footer-col">
+        <p class="footer-logo">Imbokodo Marketplace</p>
+        <p class="footer-tagline">Empowering South African women artisans through ethical commerce.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Navigate</h4>
+        <a href="index.html">Home</a>
+        <a href="shop.html">Shop</a>
+        <a href="index.html#our-story">Our Story</a>
+        <a href="index.html#contact">Get in Touch</a>
+      </div>
+      <div class="footer-col">
+        <h4>Get in Touch</h4>
+        <p>hello@imbokodo.co.za</p>
+        <p>Cape Town, South Africa</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 Imbokodo Marketplace. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Cart Sidebar (accessible from nav) -->
+  <div class="overlay" id="overlay" onclick="closeSidebars()"></div>
+  <aside class="sidebar cart-sidebar" id="cartSidebar">
+    <div class="sidebar-header">
+      <h3>Your Cart</h3>
+      <button onclick="closeCart()">&#10005;</button>
+    </div>
+    <div class="discount-row">
+      <input type="text" id="discountInput" placeholder="Discount code" />
+      <button onclick="applyDiscount()">Apply</button>
+    </div>
+    <p class="discount-msg" id="discountMsg"></p>
+    <div class="cart-items" id="cartItems"><p class="empty-msg">Your cart is empty.</p></div>
+    <div class="cart-footer" id="cartFooter" style="display:none;">
+      <div class="cart-totals">
+        <span>Subtotal</span><span id="cartSubtotal">R 0</span>
+        <span id="discountLabel" style="display:none;color:var(--terracotta);">Discount</span>
+        <span id="discountAmt"   style="display:none;color:var(--terracotta);"></span>
+        <span class="total-label">Total</span><span class="total-val" id="cartTotal">R 0</span>
+      </div>
+      <a href="checkout.html" class="btn-primary full-width">Proceed to Checkout</a>
+    </div>
+  </aside>
+
+  <aside class="sidebar wishlist-sidebar" id="wishlistSidebar">
+    <div class="sidebar-header">
+      <h3>Your Wishlist</h3>
+      <button onclick="closeWishlist()">&#10005;</button>
+    </div>
+    <div class="cart-items" id="wishlistItems"><p class="empty-msg">Your wishlist is empty.</p></div>
+  </aside>
+
+  <div class="toast" id="toast"></div>
+  <div class="share-copied" id="shareCopied">Copied to clipboard!</div>
+
+  <script src="app.js"></script>
+  <script>
+  /* checkout.js — inline */
+
+  let currentStep = 1;
+  let solidarityEnabled = false;
+  let solidarityAmt = 0;
+  let orderData = {}; // captured at confirmation
+
+  // ── Helpers ──────────────────────────────
+  function fmt2(n) {
+    return 'R ' + Number(n).toLocaleString('en-ZA', { minimumFractionDigits: 0 });
+  }
+
+  function getSubtotal() {
+    return cart.reduce((s, i) => s + i.price * i.qty, 0);
+  }
+
+  function getDiscount() {
+    if (!discountApplied) return 0;
+    return Math.round(getSubtotal() * discountApplied.pct / 100);
+  }
+
+  function getOrderTotal() {
+    return getSubtotal() - getDiscount();
+  }
+
+  function generateRef() {
+    return 'IMB-' + Date.now().toString(36).toUpperCase().slice(-6);
+  }
+
+  // ── Progress ──────────────────────────────
+  function goToStep(n) {
+    // Validate step 1 (non-empty cart) — skip check for confirmation step
+    if (n > 1 && n < 4 && cart.length === 0) {
+      showToast('Your cart is empty.');
+      return;
+    }
+
+    document.querySelectorAll('.checkout-step').forEach(s => s.classList.remove('active'));
+    document.getElementById('step' + n).classList.add('active');
+
+    // Update progress indicators
+    for (let i = 1; i <= 4; i++) {
+      const prog = document.getElementById('prog-' + i);
+      prog.classList.remove('active', 'done');
+      if (i === n) prog.classList.add('active');
+      if (i < n)  prog.classList.add('done');
+
+      if (i < 4) {
+        const conn = document.getElementById('conn-' + i);
+        conn.classList.toggle('done', i < n);
+      }
+    }
+
+    // Hide sidebar on confirmation
+    const sidebar = document.getElementById('orderSummarySidebar');
+    if (n === 4) {
+      sidebar.style.display = 'none';
+      document.getElementById('checkoutProgress').style.display = 'none';
+      document.getElementById('checkoutBody').style.gridTemplateColumns = '1fr';
+      document.getElementById('step4').style.gridColumn = '1 / -1';
+    } else {
+      sidebar.style.display = '';
+      document.getElementById('checkoutBody').style.gridTemplateColumns = '';
+    }
+
+    currentStep = n;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // ── Cart Review (Step 1) ──────────────────
+  function renderCartReview() {
+    const container = document.getElementById('cartReviewItems');
+
+    if (!cart.length) {
+      container.innerHTML = `
+        <div class="cart-empty-co">
+          <h3>Your cart is empty</h3>
+          <p>Head back to the shop to add some pieces.</p>
+          <a href="shop.html" class="btn-co-primary" style="display:inline-block;margin-top:16px;text-decoration:none;">Browse Shop</a>
+        </div>`;
+      document.getElementById('btnStep1Next').disabled = true;
+      return;
+    }
+    document.getElementById('btnStep1Next').disabled = false;
+
+    container.innerHTML = cart.map(item => `
+      <div class="cr-item">
+        <img class="cr-img" src="${item.img}" alt="${item.name}" />
+        <div class="cr-info">
+          <p class="cr-name">${item.name}</p>
+          <div class="cr-qty-control">
+            <button onclick="coChangeQty(${item.id}, -1)">&#8722;</button>
+            <span id="cqty-${item.id}">${item.qty}</span>
+            <button onclick="coChangeQty(${item.id}, +1)">&#43;</button>
+          </div>
+        </div>
+        <div class="cr-right">
+          <span class="cr-price">${fmt2(item.price * item.qty)}</span>
+          <span class="cr-remove" onclick="coRemoveItem(${item.id})">Remove</span>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function coChangeQty(id, delta) {
+    const item = cart.find(i => i.id === id);
+    if (!item) return;
+    item.qty += delta;
+    if (item.qty <= 0) { coRemoveItem(id); return; }
+    saveCart();
+    updateCartCount();
+    renderCartReview();
+    renderOrderSummary();
+  }
+
+  function coRemoveItem(id) {
+    cart = cart.filter(i => i.id !== id);
+    saveCart();
+    updateCartCount();
+    renderCartReview();
+    renderOrderSummary();
+  }
+
+  // Discount at checkout
+  function coApplyDiscount() {
+    const input = document.getElementById('coDiscountInput');
+    const msg   = document.getElementById('coDiscountMsg');
+    const code  = input.value.trim().toUpperCase();
+    if (!code) { msg.style.color = 'var(--mid)'; msg.textContent = 'Please enter a code.'; return; }
+
+    const pct = DISCOUNT_CODES[code];
+    if (pct) {
+      discountApplied = { code, pct };
+      sessionStorage.setItem('imbokodo_discount', JSON.stringify(discountApplied));
+      msg.style.color = 'green';
+      msg.textContent = `✓ ${pct}% discount applied!`;
+    } else {
+      discountApplied = null;
+      sessionStorage.removeItem('imbokodo_discount');
+      msg.style.color = 'var(--terracotta)';
+      msg.textContent = 'Invalid code. Try WINTER30';
+    }
+    renderOrderSummary();
+  }
+
+  // ── Order Summary Sidebar ────────────────
+  function renderOrderSummary() {
+    const itemsEl  = document.getElementById('osSidebarItems');
+    const totalsEl = document.getElementById('osSidebarTotals');
+
+    itemsEl.innerHTML = cart.map(item => `
+      <div class="os-item">
+        <img class="os-item-img" src="${item.img}" alt="${item.name}" />
+        <div class="os-item-name">
+          ${item.name}
+          <div class="os-item-qty">Qty: ${item.qty}</div>
+        </div>
+        <span class="os-item-price">${fmt2(item.price * item.qty)}</span>
+      </div>
+    `).join('') || '<p style="font-size:0.82rem;color:var(--mid);padding:8px 0;">No items yet.</p>';
+
+    const sub      = getSubtotal();
+    const discount = getDiscount();
+    const total    = getOrderTotal();
+
+    let rows = `
+      <div class="os-row"><span>Subtotal</span><span>${fmt2(sub)}</span></div>
+    `;
+    if (discount > 0) {
+      rows += `<div class="os-row"><span style="color:var(--terracotta);">Discount (${discountApplied.pct}%)</span><span class="discount-val">−${fmt2(discount)}</span></div>`;
+    }
+    if (solidarityEnabled && solidarityAmt > 0) {
+      rows += `<div class="os-row"><span style="color:var(--terracotta);">Solidarity Add-On</span><span class="solidarity-val">+${fmt2(solidarityAmt)}</span></div>`;
+    }
+    rows += `<div class="os-row total"><span>Total</span><span>${fmt2(total + (solidarityEnabled ? solidarityAmt : 0))}</span></div>`;
+
+    totalsEl.innerHTML = rows;
+  }
+
+  // ── Solidarity ───────────────────────────
+  function toggleSolidarity() {
+    solidarityEnabled = !solidarityEnabled;
+    const toggle = document.getElementById('solidarityToggle');
+    const body   = document.getElementById('solidarityBody');
+    toggle.classList.toggle('checked', solidarityEnabled);
+    body.classList.toggle('open', solidarityEnabled);
+    if (!solidarityEnabled) {
+      solidarityAmt = 0;
+      document.getElementById('solidarityAmount').value = '';
+      document.querySelectorAll('.chip').forEach(c => c.classList.remove('selected'));
+      document.getElementById('solidarityMatchNote').style.display = 'none';
+    }
+    renderOrderSummary();
+  }
+
+  function selectChip(btn, amount) {
+    document.querySelectorAll('.chip').forEach(c => c.classList.remove('selected'));
+    btn.classList.add('selected');
+    solidarityAmt = amount;
+    document.getElementById('solidarityAmount').value = amount;
+    updateMatchNote();
+    renderOrderSummary();
+  }
+
+  function onCustomSolidarity() {
+    const val = parseFloat(document.getElementById('solidarityAmount').value) || 0;
+    solidarityAmt = val;
+    document.querySelectorAll('.chip').forEach(c => c.classList.remove('selected'));
+    updateMatchNote();
+    renderOrderSummary();
+  }
+
+  function updateMatchNote() {
+    const note = document.getElementById('solidarityMatchNote');
+    const contrib = document.getElementById('solidarityContribDisplay');
+    const impact  = document.getElementById('solidarityTotalImpact');
+    if (solidarityAmt > 0) {
+      contrib.textContent = fmt2(solidarityAmt);
+      impact.textContent  = fmt2(solidarityAmt * 2);
+      note.style.display  = 'block';
+    } else {
+      note.style.display = 'none';
+    }
+  }
+
+  // ── Delivery Validation ──────────────────
+  function validateDelivery() {
+    const required = ['del_fname','del_lname','del_email','del_phone','del_street','del_city','del_province','del_postal'];
+    let ok = true;
+    required.forEach(id => {
+      const el = document.getElementById(id);
+      el.classList.remove('error');
+      if (!el.value.trim()) { el.classList.add('error'); ok = false; }
+    });
+    if (!ok) { showToast('Please fill in all required fields.'); return; }
+    goToStep(3);
+  }
+
+  // ── Payment Validation ───────────────────
+  function validatePayment() {
+    const required = ['pay_name','pay_card','pay_expiry','pay_cvv'];
+    let ok = true;
+    required.forEach(id => {
+      const el = document.getElementById(id);
+      el.classList.remove('error');
+      if (!el.value.trim()) { el.classList.add('error'); ok = false; }
+    });
+    if (!ok) { showToast('Please fill in all card details.'); return; }
+
+    // Check solidarity has an amount if enabled
+    if (solidarityEnabled && solidarityAmt <= 0) {
+      showToast('Please enter a solidarity amount, or uncheck the option.');
+      return;
+    }
+
+    placeOrder();
+  }
+
+  // ── Card formatting helpers ──────────────
+  function formatCardNumber(el) {
+    let v = el.value.replace(/\D/g, '').slice(0, 16);
+    el.value = v.replace(/(.{4})/g, '$1 ').trim();
+  }
+  function formatExpiry(el) {
+    let v = el.value.replace(/\D/g, '').slice(0, 4);
+    if (v.length >= 3) v = v.slice(0,2) + ' / ' + v.slice(2);
+    el.value = v;
+  }
+
+  // ── Place Order & Build Confirmation ─────
+  function placeOrder() {
+    const fname = document.getElementById('del_fname').value.trim();
+    const email = document.getElementById('del_email').value.trim();
+    const ref   = generateRef();
+
+    const cartSnapshot = [...cart];
+    const subtotal  = getSubtotal();
+    const discount  = getDiscount();
+    const orderTotal = getOrderTotal();
+    const uniqueArtisans = new Set(cartSnapshot.map(i => i.id)).size;
+    const totalItems = cartSnapshot.reduce((s, i) => s + i.qty, 0);
+    // Economic Exit Score: rough proxy — every R200 ≈ 1 day of financial independence
+    const exitDays  = Math.round(orderTotal / 200);
+
+    orderData = {
+      ref, fname, email,
+      cartSnapshot, subtotal, discount, orderTotal,
+      uniqueArtisans, totalItems, exitDays,
+      solidarityEnabled, solidarityAmt,
+      discountApplied: discountApplied ? { ...discountApplied } : null
+    };
+
+    // Populate confirmation UI
+    document.getElementById('confirmName').textContent = fname;
+    document.getElementById('confirmRef').textContent  = ref;
+    document.getElementById('confirmEmail').textContent = email;
+
+    document.getElementById('irTotalSpent').textContent   = fmt2(orderTotal);
+    document.getElementById('irArtisans').textContent     = uniqueArtisans;
+    document.getElementById('irProductCount').textContent = totalItems;
+    document.getElementById('irExitScore').textContent    = exitDays + (exitDays === 1 ? ' day' : ' days');
+
+    // Order breakdown
+    document.getElementById('irOrderItems').innerHTML = cartSnapshot.map(item => `
+      <div class="ir-order-item">
+        <span>${item.qty} × ${item.name}</span>
+        <span>${fmt2(item.price * item.qty)}</span>
+      </div>
+    `).join('') +
+    (discount > 0 ? `<div class="ir-order-item"><span style="color:var(--terracotta);">Discount (${orderData.discountApplied.pct}%)</span><span style="color:var(--terracotta);">−${fmt2(discount)}</span></div>` : '');
+
+    document.getElementById('irOrderTotal').textContent = fmt2(orderTotal);
+
+    // Solidarity
+    if (solidarityEnabled && solidarityAmt > 0) {
+      document.getElementById('irSolidarityStatRow').style.display = '';
+      document.getElementById('irSolidarity').textContent = fmt2(solidarityAmt);
+      document.getElementById('irMatchPill').textContent  = `+ ${fmt2(solidarityAmt)} matched`;
+    } else {
+      document.getElementById('irSolidarityStatRow').style.display = 'none';
+    }
+
+    // Clear cart
+    cart = [];
+    saveCart();
+    updateCartCount();
+
+    goToStep(4);
+  }
+
+  // ── Share Impact ─────────────────────────
+  function shareImpact() {
+    const { fname, orderTotal, uniqueArtisans, solidarityEnabled, solidarityAmt, ref } = orderData;
+    const solLine = (solidarityEnabled && solidarityAmt > 0)
+      ? ` I also donated ${fmt2(solidarityAmt)} to the Seller Development Fund — matched by Imbokodo.`
+      : '';
+    const text = `I just supported ${uniqueArtisans} South African woman artisan${uniqueArtisans !== 1 ? 's' : ''} through @ImbokodoMarketplace — spending ${fmt2(orderTotal)} on handcrafted goods that directly fund financial independence.${solLine} Every purchase is a vote against GBV. 🧡 #Imbokodo #EmpowerWomen #EthicalShopping`;
+
+    navigator.clipboard.writeText(text).then(() => {
+      const el = document.getElementById('shareCopied');
+      el.classList.add('show');
+      setTimeout(() => el.classList.remove('show'), 2800);
+    }).catch(() => {
+      showToast('Could not copy — try a different browser.');
+    });
+  }
+
+  // ── Init ─────────────────────────────────
+  document.addEventListener('DOMContentLoaded', () => {
+    // Sync discount from session (may have been applied on cart page)
+    const saved = sessionStorage.getItem('imbokodo_discount');
+    if (saved) {
+      try {
+        discountApplied = JSON.parse(saved);
+        const inp = document.getElementById('coDiscountInput');
+        const msg = document.getElementById('coDiscountMsg');
+        if (inp) inp.value = discountApplied.code;
+        if (msg) { msg.style.color = 'green'; msg.textContent = `✓ ${discountApplied.pct}% discount applied!`; }
+      } catch(e) { /* ignore */ }
+    }
+
+    renderCartReview();
+    renderOrderSummary();
+  });
+  </script>
+</body>
+</html>

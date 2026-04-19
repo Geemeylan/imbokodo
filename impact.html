@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Impact Tracker - Imbokodo Marketplace</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    /* Impact-specific styles */
+
+    /* Hero */
+    .impact-hero {
+      background: var(--blush);
+      padding: 72px 32px 64px;
+      text-align: center;
+      border-bottom: 1px solid var(--light-border);
+    }
+    .impact-hero .eyebrow {
+      font-family: var(--font-body);
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--terracotta);
+      margin-bottom: 14px;
+    }
+    .impact-hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2.2rem, 4.2vw, 3.4rem);
+      font-weight: 400;
+      color: var(--charcoal);
+      margin-bottom: 12px;
+      letter-spacing: -0.01em;
+    }
+    .impact-hero .subtitle {
+      font-size: 0.95rem;
+      color: var(--mid);
+      max-width: 640px;
+      margin: 0 auto;
+      letter-spacing: 0.02em;
+    }
+    .impact-hero .hero-meta {
+      margin-top: 22px;
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--mid);
+    }
+
+    /* Section wrapper */
+    .impact-section {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 72px 32px;
+    }
+    .impact-section + .impact-section { padding-top: 0; }
+
+    .section-head {
+      margin-bottom: 32px;
+      border-bottom: 1px solid var(--light-border);
+      padding-bottom: 14px;
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .section-head h2 {
+      font-family: var(--font-display);
+      font-weight: 400;
+      font-size: 1.5rem;
+      color: var(--charcoal);
+    }
+    .section-head .section-meta {
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--mid);
+    }
+
+    /* Metric cards */
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+    .metric-card {
+      background: var(--white);
+      border: 1px solid var(--light-border);
+      padding: 28px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: var(--shadow-soft);
+      border-radius: 2px;
+    }
+    .metric-label {
+      font-family: var(--font-body);
+      font-size: 0.7rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--mid);
+      font-weight: 500;
+    }
+    .metric-value {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 2.6vw, 2.4rem);
+      font-weight: 400;
+      color: var(--charcoal);
+      line-height: 1.1;
+      font-variant-numeric: tabular-nums;
+    }
+    .metric-value .unit {
+      font-size: 0.78rem;
+      font-family: var(--font-body);
+      color: var(--mid);
+      margin-left: 4px;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+    }
+    .metric-caption {
+      font-size: 0.78rem;
+      color: var(--mid);
+      line-height: 1.5;
+      border-top: 1px dashed var(--light-border);
+      padding-top: 12px;
+      margin-top: auto;
+    }
+
+    /* Split bar */
+    .split-bar {
+      display: flex;
+      width: 100%;
+      height: 48px;
+      border: 1px solid var(--light-border);
+      border-radius: 2px;
+      overflow: hidden;
+      font-family: var(--font-body);
+      font-size: 0.82rem;
+    }
+    .split-bar > div {
+      display: flex;
+      align-items: center;
+      padding: 0 18px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+    }
+    .split-artisan {
+      flex: 88;
+      background: var(--terracotta);
+      color: var(--white);
+    }
+    .split-platform {
+      flex: 12;
+      background: var(--blush);
+      color: var(--charcoal);
+      justify-content: flex-end;
+    }
+    .split-legend {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 14px;
+      font-size: 0.78rem;
+      color: var(--mid);
+      letter-spacing: 0.03em;
+    }
+    .split-legend strong {
+      color: var(--charcoal);
+      font-weight: 600;
+    }
+
+    /* Breakdown list */
+    .breakdown {
+      display: grid;
+      grid-template-columns: 1fr;
+      border: 1px solid var(--light-border);
+      background: var(--white);
+      border-radius: 2px;
+    }
+    .breakdown-row {
+      display: grid;
+      grid-template-columns: 36px 1fr 90px 130px;
+      align-items: center;
+      padding: 18px 22px;
+      border-bottom: 1px solid var(--light-border);
+      gap: 18px;
+    }
+    .breakdown-row:last-child { border-bottom: none; }
+    .breakdown-pct {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      color: var(--terracotta);
+      font-variant-numeric: tabular-nums;
+    }
+    .breakdown-label {
+      font-size: 0.92rem;
+      color: var(--charcoal);
+    }
+    .breakdown-label small {
+      display: block;
+      font-size: 0.75rem;
+      color: var(--mid);
+      margin-top: 2px;
+    }
+    .breakdown-share {
+      font-size: 0.78rem;
+      color: var(--mid);
+      letter-spacing: 0.04em;
+      text-align: right;
+    }
+    .breakdown-amount {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      color: var(--charcoal);
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* Ledger table */
+    .ledger-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--light-border);
+      border-radius: 2px;
+      background: var(--white);
+    }
+    .ledger {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: var(--font-body);
+      font-size: 0.86rem;
+      min-width: 720px;
+    }
+    .ledger thead th {
+      text-align: left;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--mid);
+      padding: 14px 18px;
+      background: var(--cream);
+      border-bottom: 1px solid var(--light-border);
+    }
+    .ledger thead th.num { text-align: right; }
+    .ledger tbody td {
+      padding: 14px 18px;
+      color: var(--charcoal);
+      border-bottom: 1px solid var(--light-border);
+    }
+    .ledger tbody tr:nth-child(odd) td { background: var(--cream); }
+    .ledger tbody tr:nth-child(even) td { background: var(--blush); }
+    .ledger tbody tr:last-child td { border-bottom: none; }
+    .ledger td.num,
+    .ledger td.mono {
+      font-variant-numeric: tabular-nums;
+      font-family: 'SFMono-Regular', 'Menlo', 'Consolas', monospace;
+      font-size: 0.82rem;
+      text-align: right;
+    }
+    .ledger td.mono { text-align: left; color: var(--mid); }
+    .ledger td.cat {
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--mid);
+    }
+    .ledger tfoot td {
+      padding: 16px 18px;
+      font-size: 0.78rem;
+      color: var(--mid);
+      letter-spacing: 0.04em;
+      background: var(--white);
+      border-top: 1px solid var(--light-border);
+    }
+
+    /* Methodology */
+    .methodology {
+      background: var(--white);
+      border: 1px solid var(--light-border);
+      padding: 32px;
+      border-radius: 2px;
+    }
+    .methodology p {
+      font-size: 0.92rem;
+      color: var(--charcoal);
+      line-height: 1.75;
+    }
+    .methodology p + p { margin-top: 14px; }
+    .methodology .note {
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px dashed var(--light-border);
+      font-size: 0.78rem;
+      color: var(--mid);
+      letter-spacing: 0.03em;
+    }
+
+    /* Responsive */
+    @media (max-width: 960px) {
+      .metric-grid { grid-template-columns: repeat(2, 1fr); }
+      .breakdown-row {
+        grid-template-columns: 32px 1fr 110px;
+      }
+      .breakdown-share { display: none; }
+    }
+    @media (max-width: 760px) {
+      .impact-hero { padding: 56px 20px 48px; }
+      .impact-section { padding: 48px 20px; }
+      .split-bar > div { padding: 0 12px; font-size: 0.75rem; }
+    }
+    @media (max-width: 480px) {
+      .metric-grid { grid-template-columns: 1fr; }
+      .split-legend { font-size: 0.72rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Announcement Bar -->
+  <div class="announcement-bar" id="announcementBar">
+    <span>Sign up &amp; get 10% Off on your first purchase</span>
+    <button class="close-announcement" onclick="closeAnnouncement()" aria-label="Close">&times;</button>
+  </div>
+
+  <!-- Header / Nav -->
+  <header class="header" id="header">
+    <nav class="nav">
+      <div class="nav-left">
+        <a href="shop.html" class="nav-link">Shop</a>
+        <a href="index.html#our-story" class="nav-link">Our Story</a>
+        <a href="index.html#contact" class="nav-link">Get in Touch</a>
+      </div>
+      <div class="nav-logo">
+        <a href="index.html">Imbokodo Marketplace</a>
+      </div>
+      <div class="nav-right">
+        <button class="icon-btn" onclick="openWishlist()" aria-label="Wishlist">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </button>
+        <button class="icon-btn cart-btn" onclick="openCart()" aria-label="Cart">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+          <span class="cart-count" id="cartCount">0</span>
+        </button>
+        <button class="icon-btn" onclick="openSearch()" aria-label="Search">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Search Overlay -->
+  <div class="search-overlay" id="searchOverlay">
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="Search products…" oninput="liveSearch(this.value)" />
+      <button onclick="closeSearch()">&#10005;</button>
+    </div>
+    <div class="search-results" id="searchResults"></div>
+  </div>
+
+  <!-- Hero -->
+  <section class="impact-hero">
+    <p class="eyebrow">Transparent Ledger</p>
+    <h1>Impact Tracker</h1>
+    <p class="subtitle">A public record of every rand that moves through Imbokodo: what buyers paid, what artisans received, and what the platform retained.</p>
+    <p class="hero-meta">Reporting period · 01 Jan – 17 Apr 2026</p>
+  </section>
+
+  <!-- Metric cards -->
+  <section class="impact-section">
+    <div class="section-head">
+      <h2>Headline figures</h2>
+      <span class="section-meta">Year to date · ZAR</span>
+    </div>
+    <div class="metric-grid">
+      <div class="metric-card">
+        <span class="metric-label">Paid to artisans &amp; NGO partners</span>
+        <span class="metric-value">R 940,500</span>
+        <span class="metric-caption">88% of gross sales, settled to the women and partner organisations who made the work.</span>
+      </div>
+      <div class="metric-card">
+        <span class="metric-label">Platform fee retained</span>
+        <span class="metric-value">R 128,250</span>
+        <span class="metric-caption">12% of gross sales, covering processing, hosting, NGO coordination and reserves.</span>
+      </div>
+      <div class="metric-card">
+        <span class="metric-label">Orders fulfilled</span>
+        <span class="metric-value">142</span>
+        <span class="metric-caption">Completed and shipped between 01 January and 17 April 2026.</span>
+      </div>
+      <div class="metric-card">
+        <span class="metric-label">Active artisans</span>
+        <span class="metric-value">16</span>
+        <span class="metric-caption">Women with at least one settled sale in the reporting period.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Split -->
+  <section class="impact-section">
+    <div class="section-head">
+      <h2>The 88 / 12 split</h2>
+      <span class="section-meta">Per rand of gross sales</span>
+    </div>
+    <div class="split-bar">
+      <div class="split-artisan">88% · Artisan &amp; NGO partners</div>
+      <div class="split-platform">12% · Platform</div>
+    </div>
+    <div class="split-legend">
+      <span><strong>R 0.88</strong> of every R 1 reaches the maker</span>
+      <span><strong>R 0.12</strong> funds platform operations</span>
+    </div>
+  </section>
+
+  <!-- Where the 12% goes -->
+  <section class="impact-section">
+    <div class="section-head">
+      <h2>Where the 12% goes</h2>
+      <span class="section-meta">Composition of platform fee</span>
+    </div>
+    <div class="breakdown">
+      <div class="breakdown-row">
+        <span class="breakdown-pct">3%</span>
+        <span class="breakdown-label">
+          Payment processing
+          <small>Card acquirer, 3D Secure and settlement fees.</small>
+        </span>
+        <span class="breakdown-share">25% of fee</span>
+        <span class="breakdown-amount">R 32,063</span>
+      </div>
+      <div class="breakdown-row">
+        <span class="breakdown-pct">2%</span>
+        <span class="breakdown-label">
+          Hosting &amp; platform
+          <small>Infrastructure, storage, domain and email.</small>
+        </span>
+        <span class="breakdown-share">17% of fee</span>
+        <span class="breakdown-amount">R 21,375</span>
+      </div>
+      <div class="breakdown-row">
+        <span class="breakdown-pct">4%</span>
+        <span class="breakdown-label">
+          NGO coordination
+          <small>Onboarding, training and logistics with partner NGOs.</small>
+        </span>
+        <span class="breakdown-share">33% of fee</span>
+        <span class="breakdown-amount">R 42,750</span>
+      </div>
+      <div class="breakdown-row">
+        <span class="breakdown-pct">3%</span>
+        <span class="breakdown-label">
+          Operational reserve
+          <small>Refunds, chargebacks and working capital buffer.</small>
+        </span>
+        <span class="breakdown-share">25% of fee</span>
+        <span class="breakdown-amount">R 32,062</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Ledger -->
+  <section class="impact-section">
+    <div class="section-head">
+      <h2>Recent transactions</h2>
+      <span class="section-meta">Last 15 settled orders</span>
+    </div>
+    <div class="ledger-wrap">
+      <table class="ledger">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Order ID</th>
+            <th>Category</th>
+            <th class="num">Gross</th>
+            <th class="num">To Seller (88%)</th>
+            <th class="num">Platform Fee (12%)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>2026-04-17</td><td class="mono">IMB-0142</td><td class="cat">Beadwork</td><td class="num">R 1,250</td><td class="num">R 1,100</td><td class="num">R 150</td></tr>
+          <tr><td>2026-04-17</td><td class="mono">IMB-0141</td><td class="cat">Ceramics</td><td class="num">R 2,400</td><td class="num">R 2,112</td><td class="num">R 288</td></tr>
+          <tr><td>2026-04-16</td><td class="mono">IMB-0140</td><td class="cat">Baskets</td><td class="num">R 680</td><td class="num">R 598</td><td class="num">R 82</td></tr>
+          <tr><td>2026-04-16</td><td class="mono">IMB-0139</td><td class="cat">Linen</td><td class="num">R 3,150</td><td class="num">R 2,772</td><td class="num">R 378</td></tr>
+          <tr><td>2026-04-15</td><td class="mono">IMB-0138</td><td class="cat">Apparel</td><td class="num">R 1,890</td><td class="num">R 1,663</td><td class="num">R 227</td></tr>
+          <tr><td>2026-04-15</td><td class="mono">IMB-0137</td><td class="cat">Candles</td><td class="num">R 420</td><td class="num">R 370</td><td class="num">R 50</td></tr>
+          <tr><td>2026-04-14</td><td class="mono">IMB-0136</td><td class="cat">Jewellery</td><td class="num">R 2,750</td><td class="num">R 2,420</td><td class="num">R 330</td></tr>
+          <tr><td>2026-04-14</td><td class="mono">IMB-0135</td><td class="cat">Décor</td><td class="num">R 1,560</td><td class="num">R 1,373</td><td class="num">R 187</td></tr>
+          <tr><td>2026-04-13</td><td class="mono">IMB-0134</td><td class="cat">Beadwork</td><td class="num">R 950</td><td class="num">R 836</td><td class="num">R 114</td></tr>
+          <tr><td>2026-04-13</td><td class="mono">IMB-0133</td><td class="cat">Ceramics</td><td class="num">R 3,200</td><td class="num">R 2,816</td><td class="num">R 384</td></tr>
+          <tr><td>2026-04-12</td><td class="mono">IMB-0132</td><td class="cat">Baskets</td><td class="num">R 1,120</td><td class="num">R 986</td><td class="num">R 134</td></tr>
+          <tr><td>2026-04-11</td><td class="mono">IMB-0131</td><td class="cat">Linen</td><td class="num">R 2,480</td><td class="num">R 2,182</td><td class="num">R 298</td></tr>
+          <tr><td>2026-04-11</td><td class="mono">IMB-0130</td><td class="cat">Jewellery</td><td class="num">R 1,675</td><td class="num">R 1,474</td><td class="num">R 201</td></tr>
+          <tr><td>2026-04-10</td><td class="mono">IMB-0129</td><td class="cat">Apparel</td><td class="num">R 2,100</td><td class="num">R 1,848</td><td class="num">R 252</td></tr>
+          <tr><td>2026-04-10</td><td class="mono">IMB-0128</td><td class="cat">Décor</td><td class="num">R 890</td><td class="num">R 783</td><td class="num">R 107</td></tr>
+        </tbody>
+        <tfoot>
+          <tr><td colspan="6">Showing 15 of 142 settled orders. Customer names, addresses and item-level detail are omitted for privacy.</td></tr>
+        </tfoot>
+      </table>
+    </div>
+  </section>
+
+  <!-- Methodology -->
+  <section class="impact-section">
+    <div class="section-head">
+      <h2>Methodology</h2>
+      <span class="section-meta">How these figures are calculated</span>
+    </div>
+    <div class="methodology">
+      <p>Gross sales are the total amount paid by the buyer for goods, excluding shipping and excluding VAT where applicable. The 88 / 12 split is applied to this gross amount on a per-order basis at the moment of settlement, not as a monthly average.</p>
+      <p>"Paid to artisans and NGO partners" reflects funds released into artisan and partner accounts after the acquirer settles the card transaction, typically two to four business days after the order ships. Orders that have been placed but not yet shipped are excluded from these figures.</p>
+      <p>Refunds and chargebacks are deducted from the gross sales figure of the period in which they are resolved, and the corresponding 88 / 12 split is reversed. The platform fee component of a refunded order is returned to the operational reserve line rather than retained as income.</p>
+      <p>The platform fee composition shown above represents target allocation across a full financial year. Actual month-to-month composition varies with transaction volume and operational activity; any surplus is carried into the operational reserve.</p>
+      <p class="note">Figures are self-reported and have not been independently audited. An annual independent review is planned for the first full trading year.</p>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer" id="contact">
+    <div class="container footer-grid">
+      <div class="footer-col">
+        <p class="footer-logo">Imbokodo Marketplace</p>
+        <p class="footer-tagline">Empowering South African women artisans through ethical commerce.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Navigate</h4>
+        <a href="index.html">Home</a>
+        <a href="shop.html">Shop</a>
+        <a href="impact.html">Impact</a>
+        <a href="index.html#our-story">Our Story</a>
+        <a href="index.html#contact">Get in Touch</a>
+      </div>
+      <div class="footer-col">
+        <h4>Get in Touch</h4>
+        <p>hello@imbokodo.co.za</p>
+        <p>Cape Town, South Africa</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 Imbokodo Marketplace. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <!-- Cart Sidebar -->
+  <div class="overlay" id="overlay" onclick="closeSidebars()"></div>
+  <aside class="sidebar cart-sidebar" id="cartSidebar">
+    <div class="sidebar-header">
+      <h3>Your Cart</h3>
+      <button onclick="closeCart()">&#10005;</button>
+    </div>
+    <div class="discount-row">
+      <input type="text" id="discountInput" placeholder="Discount code (try WINTER30)" />
+      <button onclick="applyDiscount()">Apply</button>
+    </div>
+    <p class="discount-msg" id="discountMsg"></p>
+    <div class="cart-items" id="cartItems">
+      <p class="empty-msg">Your cart is empty.</p>
+    </div>
+    <div class="cart-footer" id="cartFooter" style="display:none;">
+      <div class="cart-totals">
+        <span>Subtotal</span><span id="cartSubtotal">R 0</span>
+        <span id="discountLabel" style="display:none;color:var(--terracotta);">Discount</span>
+        <span id="discountAmt" style="display:none;color:var(--terracotta);"></span>
+        <span class="total-label">Total</span><span class="total-val" id="cartTotal">R 0</span>
+      </div>
+      <a href="checkout.html" class="btn-outline full-width">Proceed to Checkout</a>
+    </div>
+  </aside>
+
+  <!-- Wishlist Sidebar -->
+  <aside class="sidebar wishlist-sidebar" id="wishlistSidebar">
+    <div class="sidebar-header">
+      <h3>Your Wishlist</h3>
+      <button onclick="closeWishlist()">&#10005;</button>
+    </div>
+    <div class="cart-items" id="wishlistItems">
+      <p class="empty-msg">Your wishlist is empty.</p>
+    </div>
+  </aside>
+
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shop - Imbokodo Marketplace</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    /* Shop-specific styles */
+
+    .shop-hero {
+      /*background: var(--blush);*/
+      background: url('images/shop_banner.jpg') center/cover no-repeat;
+      padding: 56px 0 56px;
+      text-align: center;
+      border-bottom: 1px solid var(--light-border);
+    }
+    .shop-hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 400;
+      color: white;
+      margin-bottom: 8px;
+    }
+    .shop-hero p {
+      font-size: 0.9rem;
+      color: white;
+      letter-spacing: 0.04em;
+    }
+
+    /* Filter Bar */
+    .filter-bar {
+      position: sticky;
+      top: var(--nav-h);
+      z-index: 90;
+      background: var(--white);
+      border-bottom: 1px solid var(--light-border);
+      padding: 0 32px;
+    }
+    .filter-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 0;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .filter-inner::-webkit-scrollbar { display: none; }
+
+    .filter-btn {
+      flex-shrink: 0;
+      background: none;
+      border: none;
+      padding: 18px 22px;
+      font-family: var(--font-body);
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--mid);
+      cursor: pointer;
+      position: relative;
+      transition: color var(--transition);
+      white-space: nowrap;
+    }
+    .filter-btn::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 22px;
+      right: 22px;
+      height: 2px;
+      background: var(--terracotta);
+      transform: scaleX(0);
+      transition: transform var(--transition);
+    }
+    .filter-btn:hover { color: var(--charcoal); }
+    .filter-btn.active { color: var(--terracotta); }
+    .filter-btn.active::after { transform: scaleX(1); }
+
+    /* count badge */
+    .filter-btn .count {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--blush);
+      color: var(--mid);
+      font-size: 0.65rem;
+      font-weight: 600;
+      min-width: 18px;
+      height: 18px;
+      border-radius: 9px;
+      padding: 0 5px;
+      margin-left: 6px;
+      vertical-align: middle;
+      transition: background var(--transition), color var(--transition);
+    }
+    .filter-btn.active .count {
+      background: var(--terracotta);
+      color: var(--white);
+    }
+
+    /* Sort + Results bar */
+    .shop-toolbar {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px 32px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .results-count {
+      font-size: 0.82rem;
+      color: var(--mid);
+      letter-spacing: 0.03em;
+    }
+    .results-count span { color: var(--charcoal); font-weight: 600; }
+
+    .sort-select {
+      border: 1px solid var(--light-border);
+      background: var(--white);
+      font-family: var(--font-body);
+      font-size: 0.8rem;
+      color: var(--charcoal);
+      padding: 8px 32px 8px 12px;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236b5c4e' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+      cursor: pointer;
+      outline: none;
+      border-radius: 2px;
+      transition: border-color var(--transition);
+    }
+    .sort-select:focus { border-color: var(--terracotta); }
+
+    /* Product Grid */
+    .shop-grid-wrap {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 32px 32px 80px;
+    }
+
+    .shop-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 28px;
+    }
+
+    /* card fade in */
+    .product-card {
+      animation: cardIn 0.4s ease both;
+    }
+    @keyframes cardIn {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* stagger via inline style */
+    .product-card.hidden {
+      display: none;
+    }
+
+    /* Category Tag on card */
+    .product-tag {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: rgba(250,245,239,0.92);
+      color: var(--mid);
+      font-size: 0.62rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 4px 8px;
+      border-radius: 2px;
+      pointer-events: none;
+    }
+
+    /* Sale Badge */
+    .sale-badge {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: var(--terracotta);
+      color: var(--white);
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      padding: 4px 8px;
+      border-radius: 2px;
+      pointer-events: none;
+    }
+
+    /* Price with strikethrough */
+    .price-row {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+    }
+    .product-price-original {
+      font-size: 0.78rem;
+      color: var(--mid);
+      text-decoration: line-through;
+      font-family: var(--font-display);
+    }
+
+    /* Empty state */
+    .empty-state {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 80px 24px;
+    }
+    .empty-state h3 {
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      color: var(--terracotta);
+      margin-bottom: 12px;
+    }
+    .empty-state p { color: var(--mid); font-size: 0.9rem; }
+
+    /* Responsive */
+    @media (max-width: 1100px) {
+      .shop-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+    @media (max-width: 760px) {
+      .shop-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+      .shop-grid-wrap { padding: 24px 20px 60px; }
+      .filter-bar { padding: 0 16px; }
+      .shop-toolbar { padding: 20px 20px 0; }
+    }
+    @media (max-width: 480px) {
+      .shop-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Announcement Bar -->
+  <div class="announcement-bar" id="announcementBar">
+    <span>Sign up &amp; get 10% Off on your first purchase</span>
+    <button class="close-announcement" onclick="closeAnnouncement()" aria-label="Close">&times;</button>
+  </div>
+
+  <!-- Header / Nav -->
+  <header class="header" id="header">
+    <nav class="nav">
+      <div class="nav-left">
+        <a href="shop.html" class="nav-link">Shop</a>
+        <a href="index.html#our-story" class="nav-link">Our Story</a>
+        <a href="index.html#contact" class="nav-link">Get in Touch</a>
+      </div>
+      <div class="nav-logo">
+        <a href="index.html">Imbokodo Marketplace</a>
+      </div>
+      <div class="nav-right">
+        <button class="icon-btn" onclick="openWishlist()" aria-label="Wishlist">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </button>
+        <button class="icon-btn cart-btn" onclick="openCart()" aria-label="Cart">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+          <span class="cart-count" id="cartCount">0</span>
+        </button>
+        <button class="icon-btn" onclick="openSearch()" aria-label="Search">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Search Overlay -->
+  <div class="search-overlay" id="searchOverlay">
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="Search products…" oninput="liveSearch(this.value)" />
+      <button onclick="closeSearch()">&#10005;</button>
+    </div>
+    <div class="search-results" id="searchResults"></div>
+  </div>
+
+  <!-- Shop Hero -->
+  <section class="shop-hero">
+    <h1>Our Collection</h1>
+    <p>Every piece handcrafted by a South African woman artisan</p>
+  </section>
+
+  <!-- Filter Bar -->
+  <div class="filter-bar">
+    <div class="filter-inner" id="filterInner">
+      <button class="filter-btn active" data-category="all" onclick="filterCategory('all', this)">
+        All <span class="count" id="count-all">24</span>
+      </button>
+      <button class="filter-btn" data-category="beadwork" onclick="filterCategory('beadwork', this)">
+        Beadwork <span class="count" id="count-beadwork">0</span>
+      </button>
+      <button class="filter-btn" data-category="ceramics" onclick="filterCategory('ceramics', this)">
+        Ceramics <span class="count" id="count-ceramics">0</span>
+      </button>
+      <button class="filter-btn" data-category="baskets" onclick="filterCategory('baskets', this)">
+        Baskets <span class="count" id="count-baskets">0</span>
+      </button>
+      <button class="filter-btn" data-category="candles" onclick="filterCategory('candles', this)">
+        Candles <span class="count" id="count-candles">0</span>
+      </button>
+      <button class="filter-btn" data-category="jewelry" onclick="filterCategory('jewelry', this)">
+        Jewellery <span class="count" id="count-jewelry">0</span>
+      </button>
+      <button class="filter-btn" data-category="linen" onclick="filterCategory('linen', this)">
+        Linen <span class="count" id="count-linen">0</span>
+      </button>
+      <button class="filter-btn" data-category="apparel" onclick="filterCategory('apparel', this)">
+        Apparel <span class="count" id="count-apparel">0</span>
+      </button>
+      <button class="filter-btn" data-category="decor" onclick="filterCategory('decor', this)">
+        Décor <span class="count" id="count-decor">0</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Toolbar -->
+  <div class="shop-toolbar">
+    <p class="results-count"><span id="visibleCount">24</span> products</p>
+    <select class="sort-select" id="sortSelect" onchange="sortProducts()">
+      <option value="default">Featured</option>
+      <option value="price-asc">Price: Low to High</option>
+      <option value="price-desc">Price: High to Low</option>
+      <option value="name-asc">Name: A – Z</option>
+      <option value="name-desc">Name: Z – A</option>
+    </select>
+  </div>
+
+  <!-- Product Grid -->
+  <div class="shop-grid-wrap">
+    <div class="shop-grid" id="shopGrid">
+      <!-- Cards injected by JS -->
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer" id="contact">
+    <div class="container footer-grid">
+      <div class="footer-col">
+        <p class="footer-logo">Imbokodo Marketplace</p>
+        <p class="footer-tagline">Empowering South African women artisans through ethical commerce.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Navigate</h4>
+        <a href="index.html">Home</a>
+        <a href="shop.html">Shop</a>
+        <a href="index.html#our-story">Our Story</a>
+        <a href="index.html#contact">Get in Touch</a>
+      </div>
+      <div class="footer-col">
+        <h4>Get in Touch</h4>
+        <p>hello@imbokodo.co.za</p>
+        <p>Cape Town, South Africa</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 Imbokodo Marketplace. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <!-- Cart Sidebar -->
+  <div class="overlay" id="overlay" onclick="closeSidebars()"></div>
+  <aside class="sidebar cart-sidebar" id="cartSidebar">
+    <div class="sidebar-header">
+      <h3>Your Cart</h3>
+      <button onclick="closeCart()">&#10005;</button>
+    </div>
+    <div class="discount-row">
+      <input type="text" id="discountInput" placeholder="Discount code (try WINTER30)" />
+      <button onclick="applyDiscount()">Apply</button>
+    </div>
+    <p class="discount-msg" id="discountMsg"></p>
+    <div class="cart-items" id="cartItems">
+      <p class="empty-msg">Your cart is empty.</p>
+    </div>
+    <div class="cart-footer" id="cartFooter" style="display:none;">
+      <div class="cart-totals">
+        <span>Subtotal</span><span id="cartSubtotal">R 0</span>
+        <span id="discountLabel" style="display:none;color:var(--terracotta);">Discount</span>
+        <span id="discountAmt" style="display:none;color:var(--terracotta);"></span>
+        <span class="total-label">Total</span><span class="total-val" id="cartTotal">R 0</span>
+      </div>
+      <a href="checkout.html" class="btn-outline full-width">Proceed to Checkout</a>
+    </div>
+  </aside>
+
+  <!-- Wishlist Sidebar -->
+  <aside class="sidebar wishlist-sidebar" id="wishlistSidebar">
+    <div class="sidebar-header">
+      <h3>Your Wishlist</h3>
+      <button onclick="closeWishlist()">&#10005;</button>
+    </div>
+    <div class="cart-items" id="wishlistItems">
+      <p class="empty-msg">Your wishlist is empty.</p>
+    </div>
+  </aside>
+
+  <!-- All product data, cart, wishlist, search, shop grid logic lives in app.js -->
+  <script src="app.js"></script>
+</body>
+</html>
